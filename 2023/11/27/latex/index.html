@@ -16,22 +16,22 @@
   <meta name="author" content="silenzio">
   <meta name="keywords" content="">
   
-    <meta name="description" content="人间忽晚，山河渐秋。">
+    <meta name="description" content="为blog添加latex支持 Hexo 默认的 Markdown 渲染器不支持复杂公式，所以需要更换渲染器。 首先要在主题的配置文件中启用math,设置其值为true,然后更换渲染器为katex katex的渲染速度要快一些,并且在移动设备上有更好的兼容性 12345post:  math:    enable: true    specific: false    engine: katex 若">
 <meta property="og:type" content="article">
-<meta property="og:title" content="随笔">
-<meta property="og:url" content="https://silenzio111.github.io/2023/10/29/post/">
+<meta property="og:title" content="latex插入公式&amp;排版">
+<meta property="og:url" content="https://silenzio111.github.io/2023/11/27/latex/">
 <meta property="og:site_name" content="Silenzio&#39;s Blog">
-<meta property="og:description" content="人间忽晚，山河渐秋。">
+<meta property="og:description" content="为blog添加latex支持 Hexo 默认的 Markdown 渲染器不支持复杂公式，所以需要更换渲染器。 首先要在主题的配置文件中启用math,设置其值为true,然后更换渲染器为katex katex的渲染速度要快一些,并且在移动设备上有更好的兼容性 12345post:  math:    enable: true    specific: false    engine: katex 若">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2023-10-29T14:30:49.000Z">
-<meta property="article:modified_time" content="2023-11-26T10:42:38.921Z">
+<meta property="article:published_time" content="2023-11-27T14:08:39.000Z">
+<meta property="article:modified_time" content="2023-12-08T05:17:57.065Z">
 <meta property="article:author" content="silenzio">
-<meta property="article:tag" content="life_record">
+<meta property="article:tag" content="math">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>随笔 - Silenzio&#39;s Blog</title>
+  <title>latex插入公式&amp;排版 - Silenzio&#39;s Blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -199,7 +199,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle">随笔</span>
+            <span id="subtitle">latex插入公式&排版</span>
           
         </div>
 
@@ -210,8 +210,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2023-10-29 22:30" pubdate>
-          2023年10月29日 晚上
+        <time datetime="2023-11-27 22:08" pubdate>
+          2023年11月27日 晚上
         </time>
       </span>
     
@@ -222,7 +222,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          10 字
+          866 字
         
       </span>
     
@@ -233,7 +233,7 @@
         
         
         
-          1 分钟
+          8 分钟
         
       </span>
     
@@ -270,12 +270,12 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">随笔</h1>
+            <h1 id="seo-header">latex插入公式&amp;排版</h1>
             
               <p class="note note-info">
                 
                   
-                    本文最后更新于：2023年11月26日 晚上
+                    本文最后更新于：2023年12月8日 下午
                   
                 
               </p>
@@ -283,7 +283,21 @@
             
               <div class="markdown-body">
                 
-                <p>人间忽晚，山河渐秋。</p>
+                <h2 id="为blog添加latex支持">为blog添加latex支持</h2>
+<p>Hexo 默认的 Markdown 渲染器不支持复杂公式，所以需要更换渲染器。</p>
+<p>首先要在主题的配置文件中启用math,设置其值为true,然后更换渲染器为katex</p>
+<p>katex的渲染速度要快一些,并且在移动设备上有更好的兼容性</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">post:</span><br>  <span class="hljs-attr">math:</span><br>    <span class="hljs-attr">enable:</span> <span class="hljs-literal">true</span><br>    <span class="hljs-attr">specific:</span> <span class="hljs-literal">false</span><br>    <span class="hljs-attr">engine:</span> <span class="hljs-string">katex</span><br></code></pre></td></tr></table></figure>
+<p>若设置speicfic为 true,则需要在文章开头添加math: true</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs markdown">title: latex<span class="hljs-emphasis">_support</span><br><span class="hljs-emphasis">date: 2023-11-27 22:08:39</span><br><span class="hljs-emphasis">tags: math</span><br><span class="hljs-emphasis">math: true</span><br></code></pre></td></tr></table></figure>
+<p>安装katex渲染器</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">npm uninstall hexo-renderer-marked --save<br>npm install hexo-renderer-markdown-it --save<br>npm install @traptitech/markdown-it-katex --save<br></code></pre></td></tr></table></figure>
+<p>完成后在站点配置中添加：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">markdown:</span><br>  <span class="hljs-attr">plugins:</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-string">&quot;@traptitech/markdown-it-katex&quot;</span><br></code></pre></td></tr></table></figure>
+<p><a href="https://fluid-dev.github.io/hexo-fluid-docs/guide/#latex-%E6%95%B0%E5%AD%A6%E5%85%AC%E5%BC%8F">参考fluid的配置说明</a></p>
+<h2 id="latex的排版">latex的排版</h2>
+<figure class="highlight latex"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs latex"><span class="hljs-keyword">\begin</span>&#123;align*&#125; <span class="hljs-params">##</span>align表示对齐,不带*会自动标注公式序号,falign可以进行左对齐,一般还是align<br><span class="hljs-built_in">&amp;</span><span class="hljs-keyword">\\</span> <span class="hljs-params">##</span>进行对齐,<span class="hljs-built_in">&amp;</span>为对齐操作符<br><span class="hljs-built_in">&amp;</span>content1 <span class="hljs-keyword">\tag</span>&#123;1&#125; <span class="hljs-keyword">\\</span>  <span class="hljs-params">##</span>tag&#123;1&#125;可以标注序号1<br><span class="hljs-keyword">\\</span>  <span class="hljs-params">##</span>&quot;<span class="hljs-keyword">\\</span>&quot;可以换行<br><span class="hljs-built_in">&amp;</span> <span class="hljs-keyword">\quad</span> content2   <span class="hljs-params">##</span>quad 可以缩进<br><span class="hljs-keyword">\\</span><br><span class="hljs-built_in">&amp;</span> <span class="hljs-keyword">\boxed</span> &#123;f(x) = e<span class="hljs-built_in">^</span>g(x)&#125;  <span class="hljs-keyword">\\</span> <span class="hljs-params">##</span> <span class="hljs-keyword">\boxed</span> 命令可以表示公式框<br><br><span class="hljs-keyword">\end</span>&#123;align*&#125;<span class="hljs-params">##</span>结尾同样要用相同的操作符<br></code></pre></td></tr></table></figure>
+<p>值得注意的是,写latex格式的时候建议仔细检查错误,避免出现一个&quot;}&quot;没了找半天错的尴尬情况</p>
 
                 
               </div>
@@ -296,7 +310,7 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="../../../../tags/life-record/" class="print-no-link">#life_record</a>
+        <a href="../../../../tags/math/" class="print-no-link">#math</a>
       
     </div>
   
@@ -308,8 +322,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>随笔</div>
-      <div>https://silenzio111.github.io/2023/10/29/post/</div>
+      <div>latex插入公式&amp;排版</div>
+      <div>https://silenzio111.github.io/2023/11/27/latex/</div>
     </div>
     <div class="license-meta">
       
@@ -321,7 +335,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2023年10月29日</div>
+          <div>2023年11月27日</div>
         </div>
       
       
@@ -353,9 +367,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="../../../../2023/11/23/code/" title="code">
+                      <a href="../../../../2023/12/01/notes/" title="数分笔记">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">code</span>
+                        <span class="hidden-mobile">数分笔记</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -363,8 +377,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="../../../../2023/10/29/test/" title="book_review_test">
-                        <span class="hidden-mobile">book_review_test</span>
+                      <a href="../../../../2023/11/23/code/" title="code">
+                        <span class="hidden-mobile">code</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

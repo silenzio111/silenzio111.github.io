@@ -16,22 +16,22 @@
   <meta name="author" content="silenzio">
   <meta name="keywords" content="">
   
-    <meta name="description" content="为blog添加了latex支持 Hexo 默认的 Markdown 渲染器不支持复杂公式，所以需要更换渲染器。 首先要在主题的配置文件中启用math,设置其值为true,然后更换渲染器为katex katex的渲染速度要快一些 12345post:  math:    enable: true    specific: false     engine: katex 若设置speicfic为 tr">
+    <meta name="description" content="七选五全错的概率 七选五要求在7个备选答案中选出5个。 如果一个人随机选择,那么他一个都没撞对的概率是多少？ 这是一个错位排列的问题，用数学方法计算十分繁琐，要求要对排列组合有很深的理解 用随机模拟的方法解决要简单一些 123456789101112131415161718192021222324252627import random # 设置正确答案的值,随便设置一个列表right_answer">
 <meta property="og:type" content="article">
-<meta property="og:title" content="latex插入公式">
-<meta property="og:url" content="https://silenzio111.github.io/2023/11/27/math/">
+<meta property="og:title" content="code">
+<meta property="og:url" content="https://silenzio111.github.io/2023/11/23/code/">
 <meta property="og:site_name" content="Silenzio&#39;s Blog">
-<meta property="og:description" content="为blog添加了latex支持 Hexo 默认的 Markdown 渲染器不支持复杂公式，所以需要更换渲染器。 首先要在主题的配置文件中启用math,设置其值为true,然后更换渲染器为katex katex的渲染速度要快一些 12345post:  math:    enable: true    specific: false     engine: katex 若设置speicfic为 tr">
+<meta property="og:description" content="七选五全错的概率 七选五要求在7个备选答案中选出5个。 如果一个人随机选择,那么他一个都没撞对的概率是多少？ 这是一个错位排列的问题，用数学方法计算十分繁琐，要求要对排列组合有很深的理解 用随机模拟的方法解决要简单一些 123456789101112131415161718192021222324252627import random # 设置正确答案的值,随便设置一个列表right_answer">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2023-11-27T14:08:39.000Z">
-<meta property="article:modified_time" content="2023-12-05T05:41:17.007Z">
+<meta property="article:published_time" content="2023-11-23T00:15:03.000Z">
+<meta property="article:modified_time" content="2023-12-08T06:03:38.897Z">
 <meta property="article:author" content="silenzio">
-<meta property="article:tag" content="math">
+<meta property="article:tag" content="code_learning">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>latex插入公式 - Silenzio&#39;s Blog</title>
+  <title>code - Silenzio&#39;s Blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -199,7 +199,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle">latex插入公式</span>
+            <span id="subtitle">code</span>
           
         </div>
 
@@ -210,8 +210,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2023-11-27 22:08" pubdate>
-          2023年11月27日 晚上
+        <time datetime="2023-11-23 08:15" pubdate>
+          2023年11月23日 早上
         </time>
       </span>
     
@@ -222,7 +222,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          968 字
+          1.7k 字
         
       </span>
     
@@ -233,7 +233,7 @@
         
         
         
-          9 分钟
+          14 分钟
         
       </span>
     
@@ -270,12 +270,12 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">latex插入公式</h1>
+            <h1 id="seo-header">code</h1>
             
               <p class="note note-info">
                 
                   
-                    本文最后更新于：2023年12月5日 下午
+                    本文最后更新于：2023年12月8日 下午
                   
                 
               </p>
@@ -283,26 +283,28 @@
             
               <div class="markdown-body">
                 
-                <h1>为blog添加了latex支持</h1>
-<p>Hexo 默认的 Markdown 渲染器不支持复杂公式，所以需要更换渲染器。</p>
-<p>首先要在主题的配置文件中启用math,设置其值为true,然后更换渲染器为katex</p>
-<p>katex的渲染速度要快一些</p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">post:</span><br>  <span class="hljs-attr">math:</span><br>    <span class="hljs-attr">enable:</span> <span class="hljs-literal">true</span><br>    <span class="hljs-attr">specific:</span> <span class="hljs-literal">false</span> <br>    <span class="hljs-attr">engine:</span> <span class="hljs-string">katex</span><br></code></pre></td></tr></table></figure>
-<p>若设置speicfic为 true,则需要在文章开头添加math: true</p>
-<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs markdown">title: latex<span class="hljs-emphasis">_support</span><br><span class="hljs-emphasis">date: 2023-11-27 22:08:39</span><br><span class="hljs-emphasis">tags: math</span><br><span class="hljs-emphasis">math: true</span><br></code></pre></td></tr></table></figure>
-<p>安装katex渲染器</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">npm uninstall hexo-renderer-marked --save<br>npm install hexo-renderer-markdown-it --save<br>npm install @traptitech/markdown-it-katex --save<br></code></pre></td></tr></table></figure>
-<p>完成后在站点配置中添加：</p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">markdown:</span><br>  <span class="hljs-attr">plugins:</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-string">&quot;@traptitech/markdown-it-katex&quot;</span><br></code></pre></td></tr></table></figure>
-<p><a href="https://fluid-dev.github.io/hexo-fluid-docs/guide/#latex-%E6%95%B0%E5%AD%A6%E5%85%AC%E5%BC%8F">参考fluid的配置说明</a></p>
+                <h2 id="七选五全错的概率">七选五全错的概率</h2>
+<p>七选五要求在7个备选答案中选出5个。</p>
+<p>如果一个人随机选择,那么他一个都没撞对的概率是多少？</p>
+<p>这是一个错位排列的问题，用数学方法计算十分繁琐，要求要对排列组合有很深的理解</p>
+<p>用随机模拟的方法解决要简单一些</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> random <br><span class="hljs-comment"># 设置正确答案的值,随便设置一个列表</span><br>right_answer = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>]<br><span class="hljs-comment">#模拟次数</span><br>n = <span class="hljs-number">100000</span><br><span class="hljs-comment">#初始化全错的样本数</span><br>b = <span class="hljs-number">0</span> <br><span class="hljs-comment">#模拟n次</span><br><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n+<span class="hljs-number">1</span>):<br>    <span class="hljs-comment">#生成随机选择答案的列表</span><br>    random_list = random.sample(<span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>,<span class="hljs-number">8</span>),<span class="hljs-number">5</span>)<br>    <span class="hljs-built_in">print</span>(i/n)<span class="hljs-comment">#显示模拟进度</span><br>    <span class="hljs-comment">## 开始判断答案是否为全错,逐个判断对应位置的答案是否正确</span><br>    a = <span class="hljs-number">0</span><br>    <span class="hljs-keyword">for</span> t <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">0</span>,<span class="hljs-number">5</span>):<br>        <span class="hljs-keyword">if</span> random_list[t] == right_answer[t]:<br>            a += <span class="hljs-number">1</span><br>        <span class="hljs-keyword">else</span>: <span class="hljs-keyword">pass</span><br>    <span class="hljs-comment">#如果都不对,那就符合要求</span><br>    <span class="hljs-keyword">if</span> a == <span class="hljs-number">0</span>:<br>        b += <span class="hljs-number">1</span><br><span class="hljs-comment">#计算并显示结果</span><br>result = b/n<br><span class="hljs-built_in">print</span>(result)<br><span class="hljs-comment">#为0.4828548.....结果大致是对的，增加模拟次数便可提高精度</span><br><br><br></code></pre></td></tr></table></figure>
+<p>这样就很快的算完了,不论是几选几,我们都能快速得到答案</p>
+<h2 id="求数列极限">求数列极限</h2>
 <p>这道题来自于一次考试，常规做法是两边夹逼</p>
-<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mtext>求</mtext><munder><mrow><mi>lim</mi><mo>⁡</mo></mrow><mrow><mi>n</mi><mo>→</mo><mi mathvariant="normal">∞</mi></mrow></munder><mfrac><mi>n</mi><mrow><msup><mi>n</mi><mn>3</mn></msup><mo>+</mo><mn>1</mn></mrow></mfrac><mo>+</mo><mfrac><mrow><mn>2</mn><mi>n</mi></mrow><mrow><msup><mi>n</mi><mn>3</mn></msup><mo>+</mo><msup><mn>2</mn><mn>2</mn></msup></mrow></mfrac><mo>+</mo><mfrac><mrow><mn>3</mn><mi>n</mi></mrow><mrow><msup><mi>n</mi><mn>3</mn></msup><mo>+</mo><msup><mn>3</mn><mn>2</mn></msup></mrow></mfrac><mo>+</mo><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mo>+</mo><mfrac><msup><mi>n</mi><mn>2</mn></msup><mrow><msup><mi>n</mi><mn>3</mn></msup><mo>+</mo><msup><mi>n</mi><mn>2</mn></msup></mrow></mfrac></mrow><annotation encoding="application/x-tex">求\lim_{n \to \infty} \dfrac{n}{n^3+1}+\dfrac{2n}{n^3+2^2}+ \dfrac{3n}{n^3+3^2}+...+\dfrac{n^2}{n^3+n^2}
+<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mtext>求</mtext><munder><mrow><mi>lim</mi><mo>⁡</mo></mrow><mrow><mi>n</mi><mo>→</mo><mi mathvariant="normal">∞</mi></mrow></munder><mfrac><mi>n</mi><mrow><msup><mi>n</mi><mn>3</mn></msup><mo>+</mo><mn>1</mn></mrow></mfrac><mo>+</mo><mfrac><mrow><mn>2</mn><mi>n</mi></mrow><mrow><msup><mi>n</mi><mn>3</mn></msup><mo>+</mo><msup><mn>2</mn><mn>2</mn></msup></mrow></mfrac><mo>+</mo><mfrac><mrow><mn>3</mn><mi>n</mi></mrow><mrow><msup><mi>n</mi><mn>3</mn></msup><mo>+</mo><msup><mn>3</mn><mn>2</mn></msup></mrow></mfrac><mo>+</mo><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mo>+</mo><mfrac><msup><mi>n</mi><mn>2</mn></msup><mrow><msup><mi>n</mi><mn>3</mn></msup><mo>+</mo><msup><mi>n</mi><mn>2</mn></msup></mrow></mfrac></mrow><annotation encoding="application/x-tex">求\lim_{n \to \infty} \dfrac{n}{n^3+1}+\dfrac{2n}{n^3+2^2}+\dfrac{3n}{n^3+3^2}+...+\dfrac{n^2}{n^3+n^2}
 </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.8769em;vertical-align:-0.7693em;"></span><span class="mord cjk_fallback">求</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.6944em;"><span style="top:-2.4em;margin-left:0em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span><span class="mrel mtight">→</span><span class="mord mtight">∞</span></span></span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span><span class="mop">lim</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.7em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.1076em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.7401em;"><span style="top:-2.989em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">3</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord">1</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.7693em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:2.0908em;vertical-align:-0.7693em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3214em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.7401em;"><span style="top:-2.989em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">3</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.7401em;"><span style="top:-2.989em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">2</span><span class="mord mathnormal">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.7693em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:2.0908em;vertical-align:-0.7693em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3214em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.7401em;"><span style="top:-2.989em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">3</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord"><span class="mord">3</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.7401em;"><span style="top:-2.989em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">3</span><span class="mord mathnormal">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.7693em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord">...</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:2.2604em;vertical-align:-0.7693em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.4911em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.7401em;"><span style="top:-2.989em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">3</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.7401em;"><span style="top:-2.989em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.7693em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></p>
 <p>观察到每一项都可以写成</p>
 <p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mfrac><mrow><mi>n</mi><mi>x</mi></mrow><mrow><msup><mi>n</mi><mn>3</mn></msup><mo>+</mo><msup><mi>x</mi><mn>2</mn></msup></mrow></mfrac></mrow><annotation encoding="application/x-tex">\dfrac{nx}{n^3+x^2}
 </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.8769em;vertical-align:-0.7693em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.1076em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.7401em;"><span style="top:-2.989em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">3</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.7401em;"><span style="top:-2.989em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">n</span><span class="mord mathnormal">x</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.7693em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></p>
-<p>那就可以用python硬算</p>
+<p>那就可以硬算</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> math<br><span class="hljs-comment">#设置数列项数和初始值</span><br>n = <span class="hljs-number">100</span><br>init_value = <span class="hljs-number">0.0</span><br><br><span class="hljs-comment">#数列每一项的通项</span><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">Xn</span>(<span class="hljs-params">x</span>):<br>    <span class="hljs-keyword">return</span> (x*n)/(n**<span class="hljs-number">3</span>+x**<span class="hljs-number">2</span>)<br><br><span class="hljs-comment">#生成数列</span><br>sequences = (Xn(i) <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span> (<span class="hljs-number">1</span>,n+<span class="hljs-number">1</span>) )<br><br><span class="hljs-comment">#使用fsum函数求和,fsum 函数可以减小浮点差</span><br>limit = math.fsum(sequences)<br><br><span class="hljs-comment">#打印结果,显示为0.5</span><br><span class="hljs-built_in">print</span>(limit)<br><br></code></pre></td></tr></table></figure>
+<h2 id="学习通脚本">学习通脚本</h2>
+<p>写了一个python脚本用于打开学习通网页，配合油猴脚本可以实现自动刷网课的功能</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs python"><br><span class="hljs-string">&quot;&quot;&quot;需要安装selenium模块及webdriver驱动&quot;&quot;&quot;</span><br><span class="hljs-keyword">from</span> time <span class="hljs-keyword">import</span> sleep<br><span class="hljs-keyword">from</span> selenium <span class="hljs-keyword">import</span> webdriver<br><br><span class="hljs-comment">#添加配置，使chrome保留数据打开</span><br>options = webdriver.ChromeOptions()<br><span class="hljs-comment">#</span><br>options.add_argument(<br>    <span class="hljs-string">r&quot;--user-data-dir=C:\Users\1\AppData\Local\Google\Chrome\User Data\Default&quot;</span><span class="hljs-comment">#这里需要填chrome的用户默认配置目录</span><br>)<br><span class="hljs-comment">#保持打开状态</span><br>options.add_experimental_option(<span class="hljs-string">&quot;detach&quot;</span>, <span class="hljs-literal">True</span>)<br><span class="hljs-comment"># 启动浏览器</span><br>browser = webdriver.Chrome(options=options)<br><span class="hljs-comment">#最大化窗口</span><br>browser.maximize_window()<br><span class="hljs-comment">#稍微等待</span><br>sleep(<span class="hljs-number">1</span>)<br><span class="hljs-comment">#输入网址</span><br>url = <span class="hljs-string">&quot;exampleURL&quot;</span><span class="hljs-comment">#输入网址</span><br>browser.get(url)<span class="hljs-comment"># 启动</span><br><br></code></pre></td></tr></table></figure>
+<p>当然这段代码只能打开单个网址，没啥用<br>
+观察到脚本是用js写的，代码行数达到了惊人的13600行，附上脚本网址<br>
+<a href="https://docs.ocsjs.com/">https://docs.ocsjs.com/</a></p>
 
                 
               </div>
@@ -315,7 +317,7 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="../../../../tags/math/" class="print-no-link">#math</a>
+        <a href="../../../../tags/code-learning/" class="print-no-link">#code_learning</a>
       
     </div>
   
@@ -327,8 +329,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>latex插入公式</div>
-      <div>https://silenzio111.github.io/2023/11/27/math/</div>
+      <div>code</div>
+      <div>https://silenzio111.github.io/2023/11/23/code/</div>
     </div>
     <div class="license-meta">
       
@@ -340,7 +342,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2023年11月27日</div>
+          <div>2023年11月23日</div>
         </div>
       
       
@@ -372,9 +374,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="../../../../2023/12/01/notes/" title="数分笔记">
+                      <a href="../../../../2023/11/27/latex/" title="latex插入公式&amp;排版">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">数分笔记</span>
+                        <span class="hidden-mobile">latex插入公式&amp;排版</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -382,8 +384,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="../../../../2023/11/23/new/" title="Reading">
-                        <span class="hidden-mobile">Reading</span>
+                      <a href="../../../../2023/10/29/post/" title="随笔">
+                        <span class="hidden-mobile">随笔</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
