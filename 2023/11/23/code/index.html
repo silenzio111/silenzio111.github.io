@@ -16,15 +16,15 @@
   <meta name="author" content="silenzio">
   <meta name="keywords" content="">
   
-    <meta name="description" content="numpy &amp; 2048 numpy是python的一个用于数组操作的库 数组和矩阵差不多,或者是说矩阵就是一个数组 在numpy中,创建一个数组 123456789101112131415161718import numpy as nparray_zero &#x3D; np.zeros([4,4])# 创建一个4*4的零数组print(array)显示   [ [0,0,0,0]     	[0">
+    <meta name="description" content="七选五的C-Sharp版本 1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071using RandomList.Core;namespace learn&amp;#123;    public">
 <meta property="og:type" content="article">
 <meta property="og:title" content="code">
 <meta property="og:url" content="https://silenzio111.github.io/2023/11/23/code/">
 <meta property="og:site_name" content="Silenzio&#39;s Blog">
-<meta property="og:description" content="numpy &amp; 2048 numpy是python的一个用于数组操作的库 数组和矩阵差不多,或者是说矩阵就是一个数组 在numpy中,创建一个数组 123456789101112131415161718import numpy as nparray_zero &#x3D; np.zeros([4,4])# 创建一个4*4的零数组print(array)显示   [ [0,0,0,0]     	[0">
+<meta property="og:description" content="七选五的C-Sharp版本 1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071using RandomList.Core;namespace learn&amp;#123;    public">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-11-23T00:15:03.000Z">
-<meta property="article:modified_time" content="2023-12-18T10:08:02.600Z">
+<meta property="article:modified_time" content="2023-12-23T14:50:34.642Z">
 <meta property="article:author" content="silenzio">
 <meta property="article:tag" content="code_learning">
 <meta name="twitter:card" content="summary_large_image">
@@ -222,7 +222,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2k 字
+          2.2k 字
         
       </span>
     
@@ -233,7 +233,7 @@
         
         
         
-          17 分钟
+          19 分钟
         
       </span>
     
@@ -275,7 +275,7 @@
               <p id="updated-time" class="note note-info" style="">
                 
                   
-                    本文最后更新于 2023年12月18日 晚上
+                    本文最后更新于 2023年12月23日 晚上
                   
                 
               </p>
@@ -283,7 +283,11 @@
             
               <div class="markdown-body">
                 
-                <h2 id="numpy-2048">numpy &amp; 2048</h2>
+                <h2 id="七选五的C-Sharp版本">七选五的C-Sharp版本</h2>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><code class="hljs c#"><span class="hljs-keyword">using</span> RandomList.Core;<br><br><span class="hljs-keyword">namespace</span> <span class="hljs-title">learn</span><br>&#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> <span class="hljs-title">Constants</span><br>    &#123;<br><br>        <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> List&lt;<span class="hljs-built_in">int</span>&gt; right = <span class="hljs-keyword">new</span> List&lt;<span class="hljs-built_in">int</span>&gt; &#123; <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span> &#125;;<br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> RandomList&lt;<span class="hljs-built_in">int</span>&gt; <span class="hljs-title">generate</span>()</span><br>        &#123;<br>            <span class="hljs-keyword">var</span> randomList = <span class="hljs-keyword">new</span> RandomList&lt;<span class="hljs-built_in">int</span>&gt; &#123; <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>, <span class="hljs-number">7</span> &#125;;<br>            randomList.Randomize();<br><br>            <span class="hljs-keyword">return</span> randomList;<br>        &#125;<br><br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> List&lt;<span class="hljs-built_in">int</span>&gt; <span class="hljs-title">RandomList_processed</span>()</span><br>        &#123;<br><br>            <span class="hljs-keyword">var</span> temp = generate();<br>            <span class="hljs-keyword">var</span> sample = <span class="hljs-keyword">new</span> List&lt;<span class="hljs-built_in">int</span>&gt;();<br><br>            <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">5</span>; i++)<br>            &#123;<br>                <span class="hljs-built_in">int</span> element = temp[i];<br>                sample.Add(element);<br>            &#125;<br>            <span class="hljs-keyword">return</span> sample;<br>        &#125;<br>    &#125;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">Compute</span><br>    &#123;<br><br><br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main_compute</span>()</span><br><br>        &#123;<br>            <span class="hljs-built_in">long</span> n = <span class="hljs-number">10000000</span>;<br>            <span class="hljs-built_in">int</span> b = <span class="hljs-number">0</span>;<br><br>            <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++)<br>            &#123;<br><br>                <span class="hljs-built_in">int</span> a = <span class="hljs-number">0</span>;<br><br>                <span class="hljs-keyword">var</span> standard = Constants.right;<br><br>                List&lt;<span class="hljs-built_in">int</span>&gt; random_sample = Constants.RandomList_processed();<br><br>                <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> j = <span class="hljs-number">0</span>; j &lt; <span class="hljs-number">5</span>; j++)<br>                &#123;<br>                    <span class="hljs-built_in">int</span> right = standard[j];<br>                    <span class="hljs-built_in">int</span> test = random_sample[j];<br><br>                    <span class="hljs-keyword">if</span> (right  ==  test)<br>                    &#123;<br>                        a++;<br>                    &#125;<br><br>                &#125;<br>                <span class="hljs-keyword">if</span> (a == <span class="hljs-number">0</span>) &#123; b++; Console.WriteLine(b); &#125;<br>            &#125;<br><br>                <span class="hljs-built_in">double</span> resuslt = (<span class="hljs-built_in">double</span>)b / n;<br>                Console.WriteLine(resuslt);<br><br>            &#125;<br>        &#125;<br>    &#125;<br><br><br></code></pre></td></tr></table></figure>
+<p>基础逻辑与之前的python版本没变，就翻译了一下。</p>
+<p>学了一阵C#，最大的感受是C#很优雅，对数据的类型有严格的要求。各种编程语言的本质都一样，就是对数据的操作罢了。</p>
+<h2 id="numpy-2048">numpy &amp; 2048</h2>
 <p>numpy是python的一个用于数组操作的库</p>
 <p>数组和矩阵差不多,或者是说矩阵就是一个数组</p>
 <p>在numpy中,创建一个数组</p>
