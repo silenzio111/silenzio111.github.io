@@ -1,0 +1,656 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="../../../../img/fluid.png">
+  <link rel="icon" href="../../../../img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="silenzio">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="从人写的文章中提取数据 （有待补充） 浅浅吐槽一下，这用常规方法（正则表达式）几乎不可能做到，这是人能做到的事吗？但看看日历，今夕是何年？ 如今有了各种各样的大模型，这样的任务还是能办到的 代码说明 准备工作，需要安装这些库 123pandasgoogle.generativeaiPyPDF2 代码主要分为两个部分，分为爬取文件和提取数据两大模块，先后执行 爬取完文件之后，进行数据提取 由于文件内">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据提取">
+<meta property="og:url" content="https://silenzio111.github.io/2024/01/05/pdfextract/">
+<meta property="og:site_name" content="Silenzio&#39;s Blog">
+<meta property="og:description" content="从人写的文章中提取数据 （有待补充） 浅浅吐槽一下，这用常规方法（正则表达式）几乎不可能做到，这是人能做到的事吗？但看看日历，今夕是何年？ 如今有了各种各样的大模型，这样的任务还是能办到的 代码说明 准备工作，需要安装这些库 123pandasgoogle.generativeaiPyPDF2 代码主要分为两个部分，分为爬取文件和提取数据两大模块，先后执行 爬取完文件之后，进行数据提取 由于文件内">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-01-05T15:33:51.000Z">
+<meta property="article:modified_time" content="2024-01-05T15:59:57.471Z">
+<meta property="article:author" content="silenzio">
+<meta property="article:tag" content="code_learning">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>数据提取 - Silenzio&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="../../../../css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="../../../../css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="../../../../css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"silenzio111.github.io","root":"/","version":"1.9.7","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":true,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="../../../../js/utils.js" ></script>
+  <script  src="../../../../js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 50vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="../../../../index.html">
+      <strong>Silenzio&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="../../../../index.html" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="../../../../archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="../../../../tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="../../../../about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="../../../../links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('../../../../img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle">数据提取</span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-01-05 23:33" pubdate>
+          2024年1月5日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          29 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">数据提取</h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    本文最后更新于 2024年1月5日 晚上
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <h1>从人写的文章中提取数据</h1>
+<p>（有待补充）</p>
+<p>浅浅吐槽一下，这用常规方法（正则表达式）几乎不可能做到，这是人能做到的事吗？但看看日历，今夕是何年？</p>
+<p>如今有了各种各样的大模型，这样的任务还是能办到的</p>
+<h2 id="代码说明">代码说明</h2>
+<p>准备工作，需要安装这些库</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs markdown">pandas<br>google.generativeai<br>PyPDF2<br></code></pre></td></tr></table></figure>
+<p>代码主要分为两个部分，分为爬取文件和提取数据两大模块，先后执行</p>
+<p>爬取完文件之后，进行数据提取</p>
+<p>由于文件内容复杂，这里让AI来填充预先设定好的格式，格式为json的二维数组,为之后转化为excel格式做好准备</p>
+<h2 id="提示词">提示词</h2>
+<p>提示词至关重要，不同的提示词虽然在单个请求中表现几乎相同，但在大量请求中就会表现出差异</p>
+<p>举个例子”提取到的项目合伙人开始从事上市公司审计的年份“，可能大家觉得就是开始审计的那一年，但在大量请求中，AI会理解为审计了多少年。因此不妨改成”提取到的项目合伙人开始从事上市公司审计的那一年“，这样就会更精确。</p>
+<p>以下是AI提示词中的json数组格式部分</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs json"><br><span class="hljs-punctuation">&#123;</span><br><span class="hljs-attr">&quot;证券代码&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-string">&quot;提取到的证券代码&quot;</span><span class="hljs-punctuation">,</span><br><span class="hljs-attr">&quot;证券简称&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-string">&quot;提取到的证券简称&quot;</span><span class="hljs-punctuation">,</span><br><span class="hljs-attr">&quot;日期&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-string">&quot;提取到的日期按照yyyy-mm-dd的格式&quot;</span><span class="hljs-punctuation">,</span><br><span class="hljs-attr">&quot;审计承做的会计师事务所&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-string">&quot;提取到的审计承做的会计师事务所全称加合伙类型&quot;</span><span class="hljs-punctuation">,</span><br><span class="hljs-attr">&quot;项目合伙人&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-string">&quot;提取到的项目合伙人姓名&quot;</span><span class="hljs-punctuation">,</span><br><span class="hljs-attr">&quot;项目合伙人成为中国注册会计师的年份&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-string">&quot;提取到的项目合伙人成为中国注册会计师的年份&quot;</span><span class="hljs-punctuation">,</span><br><span class="hljs-attr">&quot;项目合伙人开始从事上市公司审计的年份&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-string">&quot;提取到的项目合伙人开始从事上市公司审计的年份&quot;</span><span class="hljs-punctuation">,</span><br><span class="hljs-attr">&quot;项目合伙人在本所工作的年份&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-string">&quot;提取到的项目合伙人在本所工作的年份&quot;</span><span class="hljs-punctuation">,</span><br><span class="hljs-attr">&quot;项目合伙人最近 3 年签署上市公司审计报告家数&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-string">&quot;提取到的项目合伙人最近 3 年签署上市公司审计报告家数&quot;</span><span class="hljs-punctuation">,</span><br><span class="hljs-attr">&quot;项目合伙人近 3 年是否受到刑事处罚、行政处罚、行政监管措施和自律处分&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-string">&quot;提取到的项目合伙人近 3 年是否受到刑事处罚、行政处罚、行政监管措施和自律处分（回答是否）&quot;</span><span class="hljs-punctuation">,</span><br><span class="hljs-attr">&quot;签字注册会计师&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-string">&quot;提取到的不同于项目合伙人的签字注册会计师姓名&quot;</span><span class="hljs-punctuation">,</span><br><span class="hljs-attr">&quot;签字注册会计师成为中国注册会计师的年份&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-string">&quot;提取到的签字注册会计师成为中国注册会计师的年份&quot;</span><span class="hljs-punctuation">,</span><br><span class="hljs-attr">&quot;签字注册会计师开始从事上市公司审计的年份&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-string">&quot;提取到的签字注册会计师开始从事上市公司审计的年份&quot;</span><span class="hljs-punctuation">,</span><br><span class="hljs-attr">&quot;签字注册会计师在本所工作的年份&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-string">&quot;提取到的签字注册会计师在本所工作的年份&quot;</span><span class="hljs-punctuation">,</span><br><span class="hljs-attr">&quot;签字注册会计师最近 3 年签署上市公司审计报告家数&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-string">&quot;提取到的签字注册会计师最近 3 年签署上市公司审计报告家数&quot;</span><span class="hljs-punctuation">,</span><br><span class="hljs-attr">&quot;签字注册会计师近 3 年是否受到刑事处罚、行政处罚、行政监管措施和自律处分&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-string">&quot;根据提取到的签字注册会计师近 3 年是否受到刑事处罚、行政处罚、行政监管措施和自律处分回答是或者否&quot;</span><br><span class="hljs-punctuation">&#125;</span><br><br><br></code></pre></td></tr></table></figure>
+<p>先运行Main，再执行error_retry</p>
+<p>最后会得到一个data.txt</p>
+<p>更改为json格式后使用vscode对json进行检查</p>
+<p>确认json格式正确后即可转化为excel工作表。</p>
+<h2 id="AI接口">AI接口</h2>
+<p>这里使用的是Gemini，需要特殊的网络条件。不同的模型会用不同的请求方式，参考官方的说明文档</p>
+<p>在实际使用中，Gemini表现并不能让人满意，若要更换模型，重写api_1方法即可。</p>
+<p>以下是代码部分</p>
+<h2 id="爬取文件的代码">爬取文件的代码</h2>
+<p>这里爬取文件网上有现成的。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br></pre></td><td class="code"><pre><code class="hljs python"><br><span class="hljs-comment">## Step1：自定义参数</span><br><br><span class="hljs-comment"># 1、定义股票代码列表 和 爬取结果输出地址(最好指定一个空的文件夹)———必选项</span><br><br>Codelist_path = <span class="hljs-string">r&quot;&quot;</span><br>Output_path = <span class="hljs-string">r&quot;&quot;</span><br><br><br><span class="hljs-comment"># 此路径是Step4中的stock_list文件输出地址，若不执行Step4则无需修改</span><br>Stocklist_path = <span class="hljs-string">r&quot;&quot;</span><br><br><span class="hljs-comment"># 2、定义要爬取的报表类型（若同时爬取多项中间用;连接）———必选项</span><br><br><span class="hljs-comment"># 公司年度报告：category_ndbg_szsh</span><br><span class="hljs-comment"># 公司治理报告：category_gszl_szsh</span><br><br>Category_All = <span class="hljs-string">&quot;category_ndbg_szsh;category_sjdbg_szsh;category_dshgg_szsh;category_rcjy_szsh;category_sf_szsh;category_pg_szsh;category_kzzq_szsh;category_bcgz_szsh;category_tbclts_szsh;category_tszlq_szsh;category_cqdq_szsh;category_qtrz_szsh;category_jj_szsh;category_zf_szsh;category_gszl_szsh;category_jshgg_szsh;category_yjygjxz_szsh;category_bndbg_szsh;category_yjdbg_szsh;category_qyfpxzcs_szsh;category_gddh_szsh;category_zj_szsh;category_gqjl_szsh;category_gszq_szsh;category_gqbd_szsh;category_fxts_szsh;&quot;</span><br><br><span class="hljs-comment"># Category_A = Category_All</span><br><br><span class="hljs-comment"># Category_A = &quot;category_ndbg_szsh;&quot;</span><br><br>Category_A = <span class="hljs-string">&quot;category_rcjy_szsh&quot;</span><br><br><br><span class="hljs-comment"># **Category参数含义说明：**</span><br><br><span class="hljs-comment"># | category              | 含义       | category               | 含义     | category           | 含义     | category           | 含义     | category             | 含义           |</span><br><span class="hljs-comment"># | --------------------- | ---------- | ---------------------- | -------- | ------------------ | -------- | ------------------ | -------- | -------------------- | -------------- |</span><br><span class="hljs-comment"># | category_ndbg_szsh    | 年报       | category_qyfpxzcs_szsh | 权益分派 | category_gszl_szsh | 公司治理 | category_pg_szsh   | 配股     | category_gqbd_szsh   | 股权变动       |</span><br><span class="hljs-comment"># | category_bndbg_szsh   | 半年报     | category_dshgg_szsh    | 董事会   | category_zj_szsh   | 中介报告 | category_jj_szsh   | 解禁     | category_bcgz_szsh   | 补充更正       |</span><br><span class="hljs-comment"># | category_yjdbg_szsh   | 一季报     | category_jshgg_szsh    | 监事会   | category_sf_szsh   | 首发     | category_gszq_szsh | 公司债   | category_cqdq_szsh   | 澄清致歉       |</span><br><span class="hljs-comment"># | category_sjdbg_szsh   | 三季报     | category_gddh_szsh     | 股东大会 | category_zf_szsh   | 增发     | category_kzzq_szsh | 可转债   | category_fxts_szsh   | 风险提示       |</span><br><span class="hljs-comment"># | category_yjygjxz_szsh | 业绩预告   | category_rcjy_szsh     | 日常经营 | category_gqjl_szsh | 股权激励 | category_qtrz_szsh | 其他融资 | category_tbclts_szsh | 特别处理和退市 |</span><br><span class="hljs-comment"># | category_tszlq_szsh   | 退市整理期 |                        |          |                    |          |                    |          |                      |                |</span><br><br><br><span class="hljs-comment"># 3、定义要爬取的时间段———必选项</span><br><br>SeDate_A = <span class="hljs-string">&#x27;2019-01-01~2023-01-01&#x27;</span><br><br><span class="hljs-comment"># 4、定义爬取指定报告的关键词（若不指定则保持为空即可）———可选项</span><br><br>Search_key = <span class="hljs-string">&#x27;会计师事务所&#x27;</span><br><br><span class="hljs-comment"># ---------------------------------------------------使用说明：以下代码非必要请勿修改！-------------------------------------------------------</span><br><br><span class="hljs-comment">## Step2：导入工具包</span><br><br><span class="hljs-keyword">import</span> requests<br><span class="hljs-comment"># 用于获取网页内容</span><br><span class="hljs-keyword">from</span> urllib.request <span class="hljs-keyword">import</span> urlretrieve<br><span class="hljs-comment"># 用于下载网络文件到本地</span><br><span class="hljs-keyword">import</span> re<br><span class="hljs-comment"># 用于正则匹配</span><br><span class="hljs-keyword">import</span> math<br><span class="hljs-comment"># 用于调用数学函数</span><br><span class="hljs-keyword">import</span> json<br><span class="hljs-comment"># 用于解析json</span><br><span class="hljs-keyword">import</span> xlwt<br><span class="hljs-comment"># 用于写入excel</span><br><span class="hljs-keyword">import</span> xlrd<br><span class="hljs-comment"># 用于读取excel</span><br><span class="hljs-keyword">import</span> os<br><span class="hljs-comment"># 用于实现系统功能</span><br><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd<br><span class="hljs-comment"># 导入pandas工具库</span><br><br><br><span class="hljs-comment">## Step3：获取巨潮资讯的数据源格式信息</span><br><br><span class="hljs-comment"># 从以下url中提取所需要的上市企业数据源信息（该url包括了巨潮资讯网上目前所有上市企业的stockList信息，我们的目的是从中获取到不同股票的orgId，以便接下来通过orgId去爬取不同企业的指定报告）</span><br>url = <span class="hljs-string">&quot;http://www.cninfo.com.cn/new/data/szse_stock.json&quot;</span><br>ret = requests.get(url=url)<br>ret = ret.content<br>stock_list = json.loads(ret)[<span class="hljs-string">&quot;stockList&quot;</span>]<br><br><span class="hljs-comment"># 查看巨潮资讯网一共收录了多少家企业数据</span><br><span class="hljs-built_in">len</span>(stock_list)<br><br><span class="hljs-comment"># 输出stock_list中的前两项，查看一下列表中的具体数据形式</span><br><span class="hljs-built_in">print</span>(stock_list[:<span class="hljs-number">2</span>])<br><br><span class="hljs-comment">## Step4：用pandas把stock_list信息导出为本地Excel文件以便日后备用（可选）</span><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">export_excel</span>(<span class="hljs-params">export</span>):<br>    <span class="hljs-comment"># 将字典列表转换为DataFrame</span><br>    pf = pd.DataFrame(export)<br>    <span class="hljs-comment"># 指定字段顺序</span><br>    order = [<span class="hljs-string">&#x27;orgId&#x27;</span>, <span class="hljs-string">&#x27;category&#x27;</span>, <span class="hljs-string">&#x27;code&#x27;</span>, <span class="hljs-string">&#x27;pinyin&#x27;</span>, <span class="hljs-string">&#x27;zwjc&#x27;</span>]<br>    pf = pf[order]<br>    <span class="hljs-comment"># 将列名替换为中文</span><br>    columns_map = &#123;<br>        <span class="hljs-string">&#x27;orgId&#x27;</span>: <span class="hljs-string">&#x27;orgId（原始ID）&#x27;</span>,<br>        <span class="hljs-string">&#x27;category&#x27;</span>: <span class="hljs-string">&#x27;category（股市类型）&#x27;</span>,<br>        <span class="hljs-string">&#x27;code&#x27;</span>: <span class="hljs-string">&#x27;code（代码）&#x27;</span>,<br>        <span class="hljs-string">&#x27;pinyin&#x27;</span>: <span class="hljs-string">&#x27;pinyin（拼音）&#x27;</span>,<br>        <span class="hljs-string">&#x27;zwjc&#x27;</span>: <span class="hljs-string">&#x27;zwjc（）&#x27;</span><br>    &#125;<br>    pf.rename(columns=columns_map, inplace=<span class="hljs-literal">True</span>)<br>    <span class="hljs-comment"># 指定stock_list的存储路径（此处可自行更改）</span><br>    file_path = pd.ExcelWriter(Stocklist_path)<br>    <span class="hljs-comment"># 替换空单元格</span><br>    pf.fillna(<span class="hljs-string">&#x27; &#x27;</span>, inplace=<span class="hljs-literal">True</span>)<br>    <span class="hljs-comment"># 输出</span><br>    pf.to_excel(file_path, encoding=<span class="hljs-string">&#x27;utf-8&#x27;</span>, index=<span class="hljs-literal">False</span>)<br>    <span class="hljs-comment"># 保存表格</span><br>    file_path.save()<br><br><br><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&#x27;__main__&#x27;</span>:<br>    <span class="hljs-comment"># 将分析完成的列表导出为excel表格</span><br>    export_excel(stock_list)<br><br><span class="hljs-comment">## Step5：从stock_list中提取code与orgId建立“code-orgId”匹配清单</span><br><br><span class="hljs-comment"># 提取stock_list中的code与orgId，遍历生成独立字典</span><br>code_dic = &#123;(it[<span class="hljs-string">&#x27;code&#x27;</span>]): it[<span class="hljs-string">&#x27;orgId&#x27;</span>] <span class="hljs-keyword">for</span> it <span class="hljs-keyword">in</span> stock_list&#125;<br><br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;\n正在进行服务器数据库检索，共找到 &#123;&#125; 家上市公司！\n\n --------------------------------服务器数据比对工作完成，即将开始载入数据进行匹配！--------------------------------\n&quot;</span>.<span class="hljs-built_in">format</span>(<span class="hljs-built_in">len</span>(code_dic)))<br><br><span class="hljs-comment"># 若要输出查看具体“code-orgId”匹配内容请取消注释此行</span><br><span class="hljs-comment"># print(code_dic)</span><br><br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;\n --------------------------数据匹配完成，共生成 &#123;&#125; 家上市公司的“code-orgId”匹配数据！--------------------------\n&quot;</span>.<span class="hljs-built_in">format</span>(<span class="hljs-built_in">len</span>(code_dic)))<br><br><br><br><span class="hljs-comment">## Step6：从Excel文件读取待爬取的股票清单并生成列表code_list</span><br><br><span class="hljs-comment"># 定义一个读取xls文件数据并转为列表的类</span><br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">excel_read</span>:<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, excel_path=Codelist_path, encoding=<span class="hljs-string">&#x27;utf-8&#x27;</span>, index=<span class="hljs-number">0</span></span>):  <span class="hljs-comment"># 待爬取企业清单路径</span><br>        <span class="hljs-comment">#       获取文本对象</span><br>        self.data = xlrd.open_workbook(excel_path)<br><span class="hljs-comment">#       根据index获取某个sheet</span><br>        self.table = self.data.sheets()[index]<br><span class="hljs-comment">#       获取当前sheet页面的总行数,把每一行数据作为list放到 list</span><br>        self.rows = self.table.nrows<br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">get_data</span>(<span class="hljs-params">self</span>):<br>        result = []<br>        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(self.rows):<br>            <span class="hljs-comment">#           获取每一行的数据</span><br>            col = self.table.row_values(i)<br>            <span class="hljs-comment"># print(col)</span><br>            result.append(col)<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;待爬取企业已从xls文件中加载完毕，结果如下：\n &#123;&#125;\n&quot;</span>.<span class="hljs-built_in">format</span>(result))<br>        <span class="hljs-keyword">return</span> result<br><br><br><span class="hljs-comment"># 运用函数生成待爬取企业的code_list</span><br>code_list = []<br>code_list.extend(excel_read().get_data())<br><br><span class="hljs-comment"># Part2：正式工作</span><br><br><span class="hljs-comment">## Step1：定义爬取函数</span><br><br><span class="hljs-comment"># 1、对单个页面进行请求，并返回数据信息——通过data自定义特定企业</span><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">get_and_download_pdf_flie</span>(<span class="hljs-params">pageNum, stock, searchkey=<span class="hljs-string">&#x27;&#x27;</span>, category=<span class="hljs-string">&#x27;&#x27;</span>, seDate=<span class="hljs-string">&#x27;&#x27;</span></span>):<br>    url = <span class="hljs-string">&#x27;http://www.cninfo.com.cn/new/hisAnnouncement/query&#x27;</span><br>    pageNum = <span class="hljs-built_in">int</span>(pageNum)<br><span class="hljs-comment">#   定义表单数据</span><br>    data = &#123;<span class="hljs-string">&#x27;pageNum&#x27;</span>: pageNum,<br>            <span class="hljs-string">&#x27;pageSize&#x27;</span>: <span class="hljs-number">30</span>,<br>            <span class="hljs-string">&#x27;column&#x27;</span>: <span class="hljs-string">&#x27;&#x27;</span>,<br>            <span class="hljs-string">&#x27;tabName&#x27;</span>: <span class="hljs-string">&#x27;fulltext&#x27;</span>,<br>            <span class="hljs-string">&#x27;plate&#x27;</span>: <span class="hljs-string">&#x27;&#x27;</span>,<br>            <span class="hljs-string">&#x27;stock&#x27;</span>: stock,<br>            <span class="hljs-string">&#x27;searchkey&#x27;</span>: searchkey,<br>            <span class="hljs-string">&#x27;secid&#x27;</span>: <span class="hljs-string">&#x27;&#x27;</span>,<br>            <span class="hljs-string">&#x27;category&#x27;</span>: category,<br>            <span class="hljs-string">&#x27;trade&#x27;</span>: <span class="hljs-string">&#x27;&#x27;</span>,<br>            <span class="hljs-string">&#x27;seDate&#x27;</span>: seDate,<br>            <span class="hljs-string">&#x27;sortName&#x27;</span>: <span class="hljs-string">&#x27;&#x27;</span>,<br>            <span class="hljs-string">&#x27;sortType&#x27;</span>: <span class="hljs-string">&#x27;&#x27;</span>,<br>            <span class="hljs-string">&#x27;isHLtitle&#x27;</span>: <span class="hljs-string">&#x27;true&#x27;</span>&#125;<br><br><span class="hljs-comment">#   定义请求头</span><br>    headers = &#123;<span class="hljs-string">&#x27;Accept&#x27;</span>: <span class="hljs-string">&#x27;*/*&#x27;</span>,<br>               <span class="hljs-string">&#x27;Accept-Encoding&#x27;</span>: <span class="hljs-string">&#x27;gzip, deflate&#x27;</span>,<br>               <span class="hljs-string">&#x27;Accept-Language&#x27;</span>: <span class="hljs-string">&#x27;zh-CN,zh;q=0.9&#x27;</span>,<br>               <span class="hljs-string">&#x27;Connection&#x27;</span>: <span class="hljs-string">&#x27;keep-alive&#x27;</span>,<br>               <span class="hljs-string">&#x27;Content-Length&#x27;</span>: <span class="hljs-string">&#x27;181&#x27;</span>,<br>               <span class="hljs-string">&#x27;Content-Type&#x27;</span>: <span class="hljs-string">&#x27;application/x-www-form-urlencoded; charset=UTF-8&#x27;</span>,<br>               <span class="hljs-string">&#x27;Host&#x27;</span>: <span class="hljs-string">&#x27;www.cninfo.com.cn&#x27;</span>,<br>               <span class="hljs-string">&#x27;Origin&#x27;</span>: <span class="hljs-string">&#x27;http://www.cninfo.com.cn&#x27;</span>,<br>               <span class="hljs-string">&#x27;Referer&#x27;</span>: <span class="hljs-string">&#x27;http://www.cninfo.com.cn/new/commonUrl/pageOfSearch?url=disclosure/list/search&#x27;</span>,<br>               <span class="hljs-string">&#x27;User-Agent&#x27;</span>: <span class="hljs-string">&#x27;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.82 Safari/537.36&#x27;</span>,<br>               <span class="hljs-string">&#x27;X-Requested-With&#x27;</span>: <span class="hljs-string">&#x27;XMLHttpRequest&#x27;</span>&#125;<br><br><span class="hljs-comment">#   提交请求</span><br>    r = requests.post(url, data=data, headers=headers)<br><br><span class="hljs-comment">#   获取单页年报的数据，数据格式为json，解析并获取json中的年报信息</span><br>    result = r.json()[<span class="hljs-string">&#x27;announcements&#x27;</span>]<br><br><br><span class="hljs-comment"># 2.对数据信息进行提取</span><br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> result:<br>        <span class="hljs-comment">#         避免下载一些年报摘要等不需要的文件</span><br>        <span class="hljs-keyword">if</span> re.search(<span class="hljs-string">&#x27;摘要&#x27;</span>, i[<span class="hljs-string">&#x27;announcementTitle&#x27;</span>]):<br>            <span class="hljs-keyword">pass</span><br>        <span class="hljs-keyword">else</span>:<br>            title = i[<span class="hljs-string">&#x27;announcementTitle&#x27;</span>]<br><br><span class="hljs-comment">#           获取公告文件名</span><br>            secName = i[<span class="hljs-string">&#x27;secName&#x27;</span>]<br><br><span class="hljs-comment">#           获取公司股票代码</span><br>            secCode = i[<span class="hljs-string">&#x27;secCode&#x27;</span>]<br><br><span class="hljs-comment">#           获取adjunctUrl，并组合生成pdf文件下载地址（分析得知巨潮资讯数据库pdf下载地址格式：http://static.cninfo.com.cn/+adjunctUrl）</span><br>            adjunctUrl = i[<span class="hljs-string">&#x27;adjunctUrl&#x27;</span>]<br>            down_url = <span class="hljs-string">&#x27;http://static.cninfo.com.cn/&#x27;</span>+adjunctUrl<br><br><span class="hljs-comment">#           定义下载之后需要保存到本地的文件名</span><br>            filename = <span class="hljs-string">f&#x27;<span class="hljs-subst">&#123;secCode&#125;</span><span class="hljs-subst">&#123;secName&#125;</span><span class="hljs-subst">&#123;title&#125;</span>.pdf&#x27;</span><br>    <br><span class="hljs-comment">#           用正则表达式将公告文件名中的特殊符号去掉，因为保存文件时命名规则不能带有某些特殊符号（比如*号），否则会导致程序报错</span><br>            filename = re.sub(<span class="hljs-string">r&#x27;[(*)(&lt;)(#)(\\)(|)(\&quot;)(?)(:)(/)(&lt;em#)(&lt;/em#)]&#x27;</span>, <span class="hljs-string">&#x27;&#x27;</span>, filename)<br><br><span class="hljs-comment">#           定义文件存放地址</span><br>            filepath = saving_path+<span class="hljs-string">&#x27;\\&#x27;</span>+filename<br><br><span class="hljs-comment">#           提交下载请求</span><br>            r = requests.get(down_url)<br><br><span class="hljs-comment">#           用response.content来写入文件信息</span><br>            <span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(filepath, <span class="hljs-string">&#x27;wb&#x27;</span>) <span class="hljs-keyword">as</span> f:<br>                f.write(r.content)<br><br><span class="hljs-comment">#           设置进度条</span><br>            <span class="hljs-built_in">print</span>(<span class="hljs-string">f&#x27;<span class="hljs-subst">&#123;filename&#125;</span>下载完毕&#x27;</span>)<br><br><span class="hljs-comment">## Step2：自定义保存路径及确定待爬企业数量</span><br><br><span class="hljs-comment"># 设置存储年报文件的具体路劲</span><br>saving_path = Output_path<br><br><span class="hljs-comment"># 根据code_list计算待爬企业数量</span><br>Num = <span class="hljs-built_in">len</span>(code_list)<br><br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;待爬取企业总数量为：&#123;&#125;\n\n ------------------------------------已加载待爬取企业匹配信息，即将开始爬取数据！------------------------------------\n&quot;</span>.<span class="hljs-built_in">format</span>(Num))<br><br><span class="hljs-comment">## Step3：设定参数进行遍历爬取</span><br><br><span class="hljs-comment"># 从code_list中根据待爬企业数量遍历提取code与orgIdS</span><br><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">0</span>, Num):<br>    code = code_list[i][<span class="hljs-number">0</span>]<br>    orgId = code_dic[code]<br><span class="hljs-comment">#     定义stock</span><br>    stock = <span class="hljs-string">&#x27;&#123;&#125;,&#123;&#125;&#x27;</span>.<span class="hljs-built_in">format</span>(code, orgId)<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;\n即将爬取 &#123;&#125; ：&quot;</span>.<span class="hljs-built_in">format</span>(stock))<br><span class="hljs-comment">#     定义searchkey</span><br>    searchkey_A = Search_key<br><span class="hljs-comment">#     定义category</span><br>    category = Category_A<br><span class="hljs-comment">#     定义seDate</span><br>    seDate = SeDate_A<br><br><span class="hljs-comment">#     定义pageNum（需要通过观测，确保pageNum能够涵盖每一次遍历请求的结果页数，此处定为2页即可）</span><br>    <span class="hljs-keyword">for</span> pageNum <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, <span class="hljs-number">3</span>):<br>        <span class="hljs-keyword">try</span>:<br>            get_and_download_pdf_flie(<br>                pageNum, stock, searchkey_A, category, seDate,)<br>        <span class="hljs-keyword">except</span>:<br>            <span class="hljs-comment">#        超出页数后会报错，需要跳过异常以便于继续遍历执行</span><br>            <span class="hljs-keyword">pass</span><br><br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;-------------------------------------------------程序执行完成！-------------------------------------------------&quot;</span>)<br></code></pre></td></tr></table></figure>
+<h2 id="从PDF提取文字">从PDF提取文字</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> PyPDF2 <br><span class="hljs-keyword">import</span> os<br><span class="hljs-keyword">from</span> PyPDF2 <span class="hljs-keyword">import</span> PdfReader<br><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">extract</span>(<span class="hljs-params">file_path</span>) -&gt; <span class="hljs-built_in">str</span>:<br>    reader = PdfReader(file_path)<br><br>    <span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(<span class="hljs-string">&quot;info.txxt&quot;</span>,mode=<span class="hljs-string">&quot;w&quot;</span>,encoding=<span class="hljs-string">&quot;utf-8&quot;</span>) <span class="hljs-keyword">as</span> f:<br>        <br><br>        <span class="hljs-comment">#逐页把提取出的数据保存到文件中</span><br>        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">0</span>,<span class="hljs-built_in">len</span>(reader.pages)):<br>            page = reader.pages[i]<br>            text = page.extract_text()<br>            <br>            f.write(text)<br>            <span class="hljs-comment">#print(text)</span><br>    <br>    <span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(<span class="hljs-string">&quot;info.txxt&quot;</span>,mode=<span class="hljs-string">&quot;r&quot;</span>,encoding=<span class="hljs-string">&quot;utf-8&quot;</span>) <span class="hljs-keyword">as</span> g:<br>        <br>        content = g.read()        <br>        <span class="hljs-keyword">return</span> content        <br>    <br>    <br>                <br><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&quot;__main__&quot;</span>:<br>    extract()<br></code></pre></td></tr></table></figure>
+<h2 id="AI-api">AI api</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> google.generativeai <span class="hljs-keyword">as</span> genai<br><br><span class="hljs-comment"># 这里存放着Gemini的密钥</span><br>genai.configure(api_key=<span class="hljs-string">&quot;密钥&quot;</span>,transport=<span class="hljs-string">&#x27;rest&#x27;</span>)<br>model = genai.GenerativeModel(model_name = <span class="hljs-string">&quot;gemini-pro&quot;</span>)<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">api_1</span>(<span class="hljs-params">request</span>) -&gt; <span class="hljs-built_in">str</span>:<br>   <br>    request_RawContent = <span class="hljs-built_in">str</span>(request)<br>    <br>    prompt = <span class="hljs-string">&quot;提示词部分&quot;</span><br>    response = model.generate_content(prompt+request_RawContent)<br>    <br>    <span class="hljs-keyword">return</span> response.text<br>        <br><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&quot;__main__&quot;</span>:<br>    api_1()<br></code></pre></td></tr></table></figure>
+<h2 id="主程序">主程序</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> PdfExtract <span class="hljs-keyword">import</span> *<br><span class="hljs-keyword">from</span> GeminiApi1 <span class="hljs-keyword">import</span> *<br><span class="hljs-keyword">import</span> os<br><span class="hljs-keyword">import</span> time<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">get_info_1</span>(<span class="hljs-params">file_path</span>) -&gt; <span class="hljs-built_in">str</span>:<br>    <br>    content = extract(file_path)<br>    <br>    info = api_1(content)<br>    <br>    <span class="hljs-built_in">print</span>(info)<br>    <br>    <span class="hljs-keyword">return</span> info<br><br><br><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&quot;__main__&quot;</span>:<br>    path = <span class="hljs-string">&quot;./全部文档/&quot;</span><br>    file_list = os.listdir(path)<br>    num = <span class="hljs-built_in">len</span>(file_list)<br><br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">0</span>,num):<br>        file_path = path + file_list[i]<br>        <span class="hljs-built_in">print</span>(file_path + <span class="hljs-string">f&quot;<span class="hljs-subst">&#123;i&#125;</span>/<span class="hljs-subst">&#123;num&#125;</span>&quot;</span>)<br><br>        <span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(<span class="hljs-string">&quot;data.txt&quot;</span>,mode=<span class="hljs-string">&quot;a&quot;</span>,encoding=<span class="hljs-string">&quot;utf-8&quot;</span>) <span class="hljs-keyword">as</span> data:<br>            <span class="hljs-keyword">try</span>:<br>                content = get_info_1(file_path)<br>                data.writelines(content + <span class="hljs-string">&quot;,&quot;</span> + <span class="hljs-string">&quot;\n&quot;</span>)<br>            <span class="hljs-keyword">except</span>:<br>                <span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(<span class="hljs-string">&quot;error.txt&quot;</span>,mode=<span class="hljs-string">&quot;a&quot;</span>,encoding=<span class="hljs-string">&quot;utf-8&quot;</span>) <span class="hljs-keyword">as</span> error:<br>                    error.writelines(file_path + <span class="hljs-string">&quot;\n&quot;</span> )<br>                time.sleep(<span class="hljs-number">30</span>)<br>                <span class="hljs-keyword">continue</span><br>                <br>    <span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(<span class="hljs-string">&quot;error.txt&quot;</span>,mode=<span class="hljs-string">&quot;r&quot;</span>,encoding=<span class="hljs-string">&quot;utf-8&quot;</span>) <span class="hljs-keyword">as</span> error :<br>    <br>        lines = error.read().splitlines()<br>        <span class="hljs-keyword">for</span> line <span class="hljs-keyword">in</span> lines:<br><br>            file_path = line<br>            <span class="hljs-built_in">print</span>(file_path)<br>            <span class="hljs-keyword">try</span>:<br>                <span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(<span class="hljs-string">&quot;data.txt&quot;</span>,mode=<span class="hljs-string">&#x27;a&#x27;</span>,encoding=<span class="hljs-string">&quot;utf-8&quot;</span>) <span class="hljs-keyword">as</span> data:<br>                    content = get_info_1(file_path)<br>                    data.writelines(content + <span class="hljs-string">&quot;,&quot;</span> + <span class="hljs-string">&quot;\n&quot;</span>)<br>            <span class="hljs-keyword">except</span>:<br>                <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;error&quot;</span>)<br>                time.sleep(<span class="hljs-number">5</span>)<br>                <span class="hljs-keyword">continue</span><br><br></code></pre></td></tr></table></figure>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="../../../../tags/code-learning/" class="print-no-link">#code_learning</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>数据提取</div>
+      <div>https://silenzio111.github.io/2024/01/05/pdfextract/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>silenzio</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年1月5日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="../../../../2123/12/08/about/" title="更新记录">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">更新记录</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="../../../../2023/12/18/chromebook/" title="我的Chromebook">
+                        <span class="hidden-mobile">我的Chromebook</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":true,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="../../../../js/events.js" ></script>
+<script  src="../../../../js/plugins.js" ></script>
+
+
+
+
+
+  
+    <script  src="../../../../js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="../../../../js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="../../../../js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
