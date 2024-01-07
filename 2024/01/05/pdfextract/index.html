@@ -16,15 +16,15 @@
   <meta name="author" content="silenzio">
   <meta name="keywords" content="">
   
-    <meta name="description" content="从人写的文章中提取数据 （有待补充） 浅浅吐槽一下，这用常规方法（正则表达式）几乎不可能做到，这是人能做到的事吗？但看看日历，今夕是何年？ 如今有了各种各样的大模型，这样的任务还是能办到的 代码说明 准备工作，需要安装这些库 123pandasgoogle.generativeaiPyPDF2 代码主要分为两个部分，分为爬取文件和提取数据两大模块，先后执行 爬取完文件之后，进行数据提取 由于文件内">
+    <meta name="description" content="从人写的文章中提取数据 这是一篇文章 1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374757677787980818283848586878889909192939495">
 <meta property="og:type" content="article">
 <meta property="og:title" content="数据提取">
 <meta property="og:url" content="https://silenzio111.github.io/2024/01/05/pdfextract/">
 <meta property="og:site_name" content="Silenzio&#39;s Blog">
-<meta property="og:description" content="从人写的文章中提取数据 （有待补充） 浅浅吐槽一下，这用常规方法（正则表达式）几乎不可能做到，这是人能做到的事吗？但看看日历，今夕是何年？ 如今有了各种各样的大模型，这样的任务还是能办到的 代码说明 准备工作，需要安装这些库 123pandasgoogle.generativeaiPyPDF2 代码主要分为两个部分，分为爬取文件和提取数据两大模块，先后执行 爬取完文件之后，进行数据提取 由于文件内">
+<meta property="og:description" content="从人写的文章中提取数据 这是一篇文章 1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374757677787980818283848586878889909192939495">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2024-01-05T15:33:51.000Z">
-<meta property="article:modified_time" content="2024-01-05T15:59:57.471Z">
+<meta property="article:modified_time" content="2024-01-07T14:11:57.797Z">
 <meta property="article:author" content="silenzio">
 <meta property="article:tag" content="code_learning">
 <meta name="twitter:card" content="summary_large_image">
@@ -222,7 +222,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          3.4k 字
+          5.5k 字
         
       </span>
     
@@ -233,7 +233,7 @@
         
         
         
-          29 分钟
+          46 分钟
         
       </span>
     
@@ -275,7 +275,7 @@
               <p id="updated-time" class="note note-info" style="">
                 
                   
-                    本文最后更新于 2024年1月5日 晚上
+                    本文最后更新于 2024年1月7日 晚上
                   
                 
               </p>
@@ -284,7 +284,10 @@
               <div class="markdown-body">
                 
                 <h1>从人写的文章中提取数据</h1>
-<p>（有待补充）</p>
+<p>这是一篇文章</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br></pre></td><td class="code"><pre><code class="hljs markdown">1 <br> 证券代码： 000001               证券简称：平安银行              公告编号： 2023-014 <br>优先股代码： 140002                                         优先股简称：平银优 01 <br> <br>平安银行股份 有限公司 拟续聘会计师事务所的公告  <br> <br>本公司及董事会全体成员保证信息披露的内容真实、准确、完整，没有虚假记载、误导<br>性陈述或重大遗漏。  <br> <br>特别提示：  <br>1、拟续聘的会计师事务所名称：安永华明会计师事务所 （特殊普通合伙 ）。 <br>2、本公司董事会及董事会审计委员会、独立董事对拟续聘会计师事务所不<br>存在异议。  <br>3、本次续聘会计师事务所事项 须提交本公司股东大会审议。  <br> <br>平安银行股份有限公司（以下简称 “本行”）于 2023年3月8日召开第 十<br>二届董事会第 六次会议，审议并通过了《 平安银行股份有限公司关于 聘请2023<br>年度会计师事务所的议案》 ，拟续聘安永华明会计师事务所 （特殊普通合伙 ）（以<br>下简称“安永华明 ”）担任本行 2023年度中国会计准则审计师 。上述议案 须提<br>交本行股东大会审议 。现将有关情况公告如下：  <br>一、拟续聘会计师事务所的基本情况  <br>（一）机构信息  <br>1、基本信息  <br>安永华明会计师事务所（特殊普通合伙）于 1992年9月成立， 2012年8月<br>完成本土化转制， 从一家中外合作的有限责任制事务所转制为特殊普通合伙制事<br>务所。安永华明总部设在北京，注册地址为北京市东城区东长安街 1号东方广场<br>安永大楼 17层01-12室。截至 2022年末，拥有合伙人 229人，首席合伙人为毛<br>鞍宁先生。  <br>截至 2022年末，安永华明拥有执业注册会计师 1,818人，其中拥有证券相<br>关业务服务经验的执业注册会计师超过 1,500人，注册会计师中签署过证券服务<br>业务审计报告的注册会计师超过 400人。  2 <br> 安永华明 2021年度业务总收入人民币 54.90亿元，其中审计业务收入人民<br>币52.82亿元，与证券业务 相关的收入为人民币 22.7亿元。 2021年度 A股上市<br>公司年报审计客户共计 116家，收费总额人民币 7.63亿元。安永华明 所提供服<br>务的上市公司主要 涉及制造业、金融业、批发和零售业、信息传输、软件和信息<br>技术服务业、房地产业等 行业，其中金融业 上市公司审计客户 20家。  <br>2、投资者保护能力  <br>安永华明具有良好的投资者保护能力， 已按照相关法律法规要求计提职业风<br>险基金和购买职业保险，保险涵盖北京总所和全部分所。已计提的职业风险基金<br>和已购买的职业保险累计赔偿限额之和超过人民币 2亿元。 安永华明近三年不存<br>在任何因与执业行为相关的民事诉讼而需承担民事责任的情况。  <br>3、诚信记录  <br>安永华明及从业人员近三年没有因执业行为受到任何刑事处罚、行政处罚，<br>以及证券交易所、行业协会等自律组织的自律监管措施和纪律处分。曾两次收到<br>证券监督管理机构出具警示函措施的决定，涉及从业人员十 三人。前述出具警示<br>函的决定属监督管理措施，并非行政处罚。根据相关法律法规的规定，该监督管<br>理措施不影响安永华明继续承接或执行证券服务业务和其他业务。  <br>（二）项目信息  <br>1、基本信息  <br>项目合伙人及签字注册会计师： 昌华女士， 于2006年成为注册会计师， 2001<br>年开始从事上市公司审计， 2001年开始在安永华明执业， 2021年开始为本 行提<br>供审计服务；近三年签署 或复核 5家上市公司审计报告 。 <br>项目质量控制复核合伙人： 田志勇先生，于 2013年成为注册会计师， 2007<br>年开始从事上市公司审计， 2015年开始在安永华明执业， 2022年开始为本行提<br>供审计服务；近三年签署或复核 4家上市公司审计报告。  <br>签字注册会计师：王阳燕女士， 于2017年成为注册会计师， 2012年开始从<br>事上市公司审计， 2012年开始在安永华明执业， 2021年开始为本 行提供审计服<br>务；近三年签署 或复核 1家上市公司审计报告 。 <br>  3 <br> 2、诚信记录  <br>项目合伙人、签字注册会计师、项目质量控制复核人近三年不存在因执业行<br>为受到刑事处罚，或受到证监会及其派出机构、行业主管部门的行政处罚、监督<br>管理措施，或受到证券交易场所、行业协会等自律组织的自律监管措施、纪律处<br>分的情况。  <br>3、独立性  <br>安永华明及上述项目合伙人、签字注册会计师、项目质量控制复核人等不存<br>在违反《中国注册会计师职业道德守则》对独立性要求的情形。  <br>4、审计收费  <br>平安银行股份有限公司 2023年度的审计费用拟定为 合计人民币 1,020万元，<br>较上年审计费用相比变化不大， 其中财务审计费用拟定为 人民币 870万元（包含<br>增值税及代垫费用） ，内部控制审计费用拟定为 人民币 150万元（包含增值税及<br>代垫费用） 。本次审计费用按照市场公允合理的定价原则，综合考虑业务规模、<br>审计工作量等因素后与安永华明协商确定。  <br>二、拟续聘会计师事务所履行的程序  <br>（一）审计委员会履职情况  <br>本行董事会审计委员会委员查阅了安永华明关于专业胜任能力、 投资者保护<br>能力、诚信状况和独立性 等相关资料，认为其能够满足为本行提供审计服务的要<br>求。本行第十二届董事会审计委员会第 四次会议审议通过了《平安银行股份有限<br>公司关于 聘请2023年度会计师事务所的议案》 ，并同意将该议案提交董事会审<br>议。  <br>（二）独立董事的事前认可情况和独立意见  <br>本行独立董事对 续聘会计师事务所的相关事项进行了事前认可并发表独立<br>意见：安永华明在专业胜任能 力、投资者保护能力、 诚信状况和独立性 等方面符<br>合监管规定。 续聘安永华明担任 本行 2023年度中国会计准则审计师的相关决策<br>程序符合 《公司法》 、 《证券法》 、 《深圳证券交易所股票上市规则》 及 《公司章程》<br>等有关规定。 独立董事同意本议案，并同意将本议案提交 本行股东大会审议。  <br>  4 <br> （三）董事会对议案审议和表决情况  <br>本行于 2023年3月8日召开第 十二届董事会第 六次会议，审议通过了《 平<br>安银行股份有限公司关于 聘请2023年度会计师事务所的议案》 。 本议案 须提交本<br>行股东大会审议。  <br>（四）生效日期  <br>本次续聘会计师事务所事项 须提交本行股东大会审议， 并自 本行股东大会审<br>议通过之日起生效。  <br>三、备查文件  <br>1、董事会决议；  <br>2、审计委员会履职证明文件；  <br>3、独立董事事前认可和独立意见；  <br>4、安永华明 基本情况说明 。 <br>特此公告。  <br> <br> <br>平安银行股份有限公司董事会  <br>2023年3月9日 <br></code></pre></td></tr></table></figure>
+<p>要在这篇公告里提取出有关注册会计师的信息。有人会说这不是很简单吗，但是这样的文档有10000篇</p>
+<p>那自然要用程序提取了</p>
 <p>浅浅吐槽一下，这用常规方法（正则表达式）几乎不可能做到，这是人能做到的事吗？但看看日历，今夕是何年？</p>
 <p>如今有了各种各样的大模型，这样的任务还是能办到的</p>
 <h2 id="代码说明">代码说明</h2>
