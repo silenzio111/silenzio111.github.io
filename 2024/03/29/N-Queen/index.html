@@ -16,15 +16,15 @@
   <meta name="author" content="silenzio">
   <meta name="keywords" content="">
   
-    <meta name="description" content="柳湖 问题从一个小组的招新传单中得来，写的很有趣，校鹅也非常的可爱，如下 12柳湖的校鹅在某个时空中有了更强的领地意识，即在柳湖湖面中，它的周围不能有其他校鹅。假设栅格化的柳湖是一个由25个12米大小的正方形组成的大正方形，每个校鹅占据一个小正方形，它周围的直线和对角线的正方形内不能有其他校鹅。请问，我们的五只校鹅可以有多少种领地占据的可能？ 问题翻译过来就是在一个二维数组中某一个元素周围的直线和">
+    <meta name="description" content="柳湖 问题从一个小组的招新传单中得来，写的很有趣，校鹅也非常的可爱，如下 柳湖的校鹅在某个时空中有了更强的领地意识，即在柳湖湖面中，它的周围不能有其他校鹅。假设栅格化的柳湖是一个由25个12米大小的正方形组成的大正方形，每个校鹅占据一个小正方形，它周围的直线和对角线的正方形内不能有其他校鹅。请问，我们的五只校鹅可以有多少种领地占据的可能？ 问题翻译过来就是在一个二维数组中某一个元素周围的直线和对角">
 <meta property="og:type" content="article">
 <meta property="og:title" content="N_Queen 与柳湖">
 <meta property="og:url" content="https://silenzio111.github.io/2024/03/29/N-Queen/">
 <meta property="og:site_name" content="Silenzio&#39;s Blog">
-<meta property="og:description" content="柳湖 问题从一个小组的招新传单中得来，写的很有趣，校鹅也非常的可爱，如下 12柳湖的校鹅在某个时空中有了更强的领地意识，即在柳湖湖面中，它的周围不能有其他校鹅。假设栅格化的柳湖是一个由25个12米大小的正方形组成的大正方形，每个校鹅占据一个小正方形，它周围的直线和对角线的正方形内不能有其他校鹅。请问，我们的五只校鹅可以有多少种领地占据的可能？ 问题翻译过来就是在一个二维数组中某一个元素周围的直线和">
+<meta property="og:description" content="柳湖 问题从一个小组的招新传单中得来，写的很有趣，校鹅也非常的可爱，如下 柳湖的校鹅在某个时空中有了更强的领地意识，即在柳湖湖面中，它的周围不能有其他校鹅。假设栅格化的柳湖是一个由25个12米大小的正方形组成的大正方形，每个校鹅占据一个小正方形，它周围的直线和对角线的正方形内不能有其他校鹅。请问，我们的五只校鹅可以有多少种领地占据的可能？ 问题翻译过来就是在一个二维数组中某一个元素周围的直线和对角">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2024-03-29T10:47:38.000Z">
-<meta property="article:modified_time" content="2024-03-29T11:31:37.868Z">
+<meta property="article:modified_time" content="2024-03-29T11:35:05.088Z">
 <meta property="article:author" content="silenzio">
 <meta property="article:tag" content="code_learning">
 <meta name="twitter:card" content="summary_large_image">
@@ -285,7 +285,7 @@
                 
                 <h2 id="柳湖">柳湖</h2>
 <p>问题从一个小组的招新传单中得来，写的很有趣，校鹅也非常的可爱，如下</p>
-<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs markdown">柳湖的校鹅在某个时空中有了更强的领地意识，即在柳湖湖面中，它的周围不能有其他校鹅。假设栅格化的柳湖是一个由25个12米大小的正方形组成的大正方形，每个校鹅占据一个小正方形，它周围的直线和对角线的正方形内不能有其他校鹅。请问，我们的五只校鹅可以有多少种领地占据的可能？<br><br></code></pre></td></tr></table></figure>
+<p>柳湖的校鹅在某个时空中有了更强的领地意识，即在柳湖湖面中，它的周围不能有其他校鹅。假设栅格化的柳湖是一个由25个12米大小的正方形组成的大正方形，每个校鹅占据一个小正方形，它周围的直线和对角线的正方形内不能有其他校鹅。请问，我们的五只校鹅可以有多少种领地占据的可能？</p>
 <p>问题翻译过来就是在一个二维数组中某一个元素周围的直线和对角线上不能有其他的元素存在，否则他们要打架，这和国际象棋中的皇后是一样的</p>
 <figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs markdown">0, 0, 0, 0 ,0							1, x, x, x ,x<br>0 ,0 ,0 ,0 ,0							x, x, 0, 0 ,0<br>0 ,0 ,0 ,0 ,0  让一只鹅皇后在[0,0]的位置--&gt; x, 0, x, 0 ,0   那么我写x的地方就不能有其它的鹅了<br>0 ,0 ,0 ,0 ,0							x, 0, 0, x ,0<br>0 ,0 ,0 ,0 ,0							x, 0, 0, 0 ,x<br><br></code></pre></td></tr></table></figure>
 <p>问的是有多少种校鹅的排列方式。</p>
