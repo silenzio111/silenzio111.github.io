@@ -1,0 +1,708 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="../../../../img/fluid.png">
+  <link rel="icon" href="../../../../img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="silenzio">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Gurobi在大规模优化问题上与Matlab的性能对比">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TSP问题的优化求解">
+<meta property="og:url" content="https://silenzio111.github.io/2024/08/31/opttsp/">
+<meta property="og:site_name" content="Silenzio&#39;s Blog">
+<meta property="og:description" content="Gurobi在大规模优化问题上与Matlab的性能对比">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-08-31T08:55:13.000Z">
+<meta property="article:modified_time" content="2024-08-31T10:37:53.890Z">
+<meta property="article:author" content="silenzio">
+<meta property="article:tag" content="math,coding">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>TSP问题的优化求解 - Silenzio&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="../../../../css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="../../../../css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="../../../../css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"silenzio111.github.io","root":"/","version":"1.9.7","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":true,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="../../../../js/utils.js" ></script>
+  <script  src="../../../../js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 50vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="../../../../index.html">
+      <strong>Silenzio&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="../../../../index.html" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="../../../../archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="../../../../tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="../../../../about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="../../../../links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="../../../../A-Vitepress-Site/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>another_site</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('../../../../img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle">TSP问题的优化求解</span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-08-31 16:55" pubdate>
+          2024年8月31日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          28 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="padding-left: 2rem; margin-right: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">TSP问题的优化求解</h1>
+            
+              <p id="updated-time" class="note note-info" style="display: none">
+                
+                  
+                    本文最后更新于 2024-08-31T18:37:53+08:00
+                  
+                  
+
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="TSP旅行商问题">TSP旅行商问题</h2>
+<h3 id="1-原题">1.原题</h3>
+<p>现有一名外国游客从广州入境，他想<strong>在144小时以内游玩尽可能多的城市</strong>，同时要求综合游玩体验最好，请你规划他的游玩路线。需要结合游客的要求给出具体的游玩路线，包括总花费时间，门票和交通的总费用以及可以游玩的景点数量。他的要求有： <strong>（不考虑money）</strong>。</p>
+<p>为便于测试，这里简化题目：现在有一名游客想在144小时内尽可能多游玩一些城市，给出去往每个城市的时间花费矩阵，进行优化求解得到路线图。</p>
+<h3 id="2-模型">2.模型</h3>
+<p>优化的目标在除了起点之外的49个城市中找到</p>
+<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>M</mi><mi>a</mi><mi>x</mi><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>0</mn></mrow><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></munderover><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>0</mn></mrow><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></munderover><msub><mi>x</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub></mrow><annotation encoding="application/x-tex"> Max\sum_{i=0}^{n-1} \sum_{j=0}^{n-1} x_{ij} 
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:3.2149em;vertical-align:-1.4138em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">M</span><span class="mord mathnormal">a</span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.8011em;"><span style="top:-1.8723em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mrel mtight">=</span><span class="mord mtight">0</span></span></span></span><span style="top:-3.05em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op">∑</span></span></span><span style="top:-4.3em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span><span class="mbin mtight">−</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.2777em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.8011em;"><span style="top:-1.8723em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.05724em;">j</span><span class="mrel mtight">=</span><span class="mord mtight">0</span></span></span></span><span style="top:-3.05em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op">∑</span></span></span><span style="top:-4.3em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span><span class="mbin mtight">−</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.4138em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.05724em;">ij</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span></span></span></p>
+<p>其中<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub></mrow><annotation encoding="application/x-tex">x_{ij}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7167em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.05724em;">ij</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span></span>为决策变量，表示是否决定从城市<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>i</mi></mrow><annotation encoding="application/x-tex">i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6595em;"></span><span class="mord mathnormal">i</span></span></span></span>到城市<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>j</mi></mrow><annotation encoding="application/x-tex">j</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.854em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.05724em;">j</span></span></span></span>，如果选择去则<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">x_{ij}=1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7167em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.05724em;">ij</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span>，否则<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">x_{ij}=0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7167em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.05724em;">ij</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span>。</p>
+<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mtext>约束条件</mtext><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>0</mn></mrow><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></munderover><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>0</mn></mrow><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></munderover><msub><mi>G</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><msub><mi>x</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>≤</mo><mtext>max_time</mtext><mspace width="1em"><mtext>(总时间花费)</mtext></mspace></mrow><annotation encoding="application/x-tex">\text{约束条件}  \sum_{i=0}^{n-1} \sum_{j=0}^{n-1} G_{ij} x_{ij} \leq \text{max\_time} \quad \text{(总时间花费)}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:3.2149em;vertical-align:-1.4138em;"></span><span class="mord text"><span class="mord cjk_fallback">约束条件</span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.8011em;"><span style="top:-1.8723em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mrel mtight">=</span><span class="mord mtight">0</span></span></span></span><span style="top:-3.05em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op">∑</span></span></span><span style="top:-4.3em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span><span class="mbin mtight">−</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.2777em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.8011em;"><span style="top:-1.8723em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.05724em;">j</span><span class="mrel mtight">=</span><span class="mord mtight">0</span></span></span></span><span style="top:-3.05em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op">∑</span></span></span><span style="top:-4.3em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span><span class="mbin mtight">−</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.4138em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal">G</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.05724em;">ij</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.05724em;">ij</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.06em;vertical-align:-0.31em;"></span><span class="mord text"><span class="mord">max_time</span></span><span class="mspace" style="margin-right:1em;"></span><span class="mord text"><span class="mord">(</span><span class="mord cjk_fallback">总时间花费</span><span class="mord">)</span></span></span></span></span></span></p>
+<p><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>G</mi></mrow><annotation encoding="application/x-tex">G</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal">G</span></span></span></span>是输入的时间矩阵，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>G</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub></mrow><annotation encoding="application/x-tex">G_{ij}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.9694em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathnormal">G</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.05724em;">ij</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span></span>表示从城市<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>i</mi></mrow><annotation encoding="application/x-tex">i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6595em;"></span><span class="mord mathnormal">i</span></span></span></span>到城市<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>j</mi></mrow><annotation encoding="application/x-tex">j</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.854em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.05724em;">j</span></span></span></span>的时间花费，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mi>a</mi><mi>x</mi><mi mathvariant="normal">_</mi><mi>t</mi><mi>i</mi><mi>m</mi><mi>e</mi></mrow><annotation encoding="application/x-tex">max\_time</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.9695em;vertical-align:-0.31em;"></span><span class="mord mathnormal">ma</span><span class="mord mathnormal">x</span><span class="mord" style="margin-right:0.02778em;">_</span><span class="mord mathnormal">t</span><span class="mord mathnormal">im</span><span class="mord mathnormal">e</span></span></span></span>表示最大时间限制。这里的时间是<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>144</mn><mo>−</mo><mtext>在广州的</mtext><mn>2.5</mn><mtext>小时</mtext></mrow><annotation encoding="application/x-tex">144 -在广州的2.5小时</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">144</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord cjk_fallback">在广州的</span><span class="mord">2.5</span><span class="mord cjk_fallback">小时</span></span></span></span></p>
+<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>0</mn></mrow><mrow><mi>n</mi><mo>−</mo><mn>1</mn><mo separator="true">,</mo><mi>j</mi><mo mathvariant="normal">≠</mo><mi>i</mi></mrow></munderover><msub><mi>x</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>=</mo><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>0</mn></mrow><mrow><mi>n</mi><mo>−</mo><mn>1</mn><mo separator="true">,</mo><mi>j</mi><mo mathvariant="normal">≠</mo><mi>i</mi></mrow></munderover><msub><mi>x</mi><mrow><mi>j</mi><mi>i</mi></mrow></msub><mspace width="1em"><mi mathvariant="normal">∀</mi><mi>i</mi><mo>∈</mo><mo stretchy="false">{</mo><mn>0</mn><mo separator="true">,</mo><mo>…</mo><mo separator="true">,</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo stretchy="false">}</mo><mspace width="1em"><mtext>(流量平衡，进出相等)</mtext></mspace></mspace></mrow><annotation encoding="application/x-tex"> \sum_{j=0}^{n-1, j \neq i} x_{ij} = \sum_{j=0}^{n-1, j \neq i} x_{ji} \quad \forall i \in \{0, \ldots, n-1\} \quad \text{(流量平衡，进出相等)} 
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:3.297em;vertical-align:-1.4138em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.8832em;"><span style="top:-1.8723em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.05724em;">j</span><span class="mrel mtight">=</span><span class="mord mtight">0</span></span></span></span><span style="top:-3.05em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op">∑</span></span></span><span style="top:-4.3471em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span><span class="mbin mtight">−</span><span class="mord mtight">1</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.05724em;">j</span><span class="mrel mtight"><span class="mrel mtight"><span class="mord vbox mtight"><span class="thinbox mtight"><span class="rlap mtight"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="inner"><span class="mord mtight"><span class="mrel mtight"></span></span></span><span class="fix"></span></span></span></span></span><span class="mrel mtight">=</span></span><span class="mord mathnormal mtight">i</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.4138em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.05724em;">ij</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:3.297em;vertical-align:-1.4138em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.8832em;"><span style="top:-1.8723em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.05724em;">j</span><span class="mrel mtight">=</span><span class="mord mtight">0</span></span></span></span><span style="top:-3.05em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op">∑</span></span></span><span style="top:-4.3471em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span><span class="mbin mtight">−</span><span class="mord mtight">1</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.05724em;">j</span><span class="mrel mtight"><span class="mrel mtight"><span class="mord vbox mtight"><span class="thinbox mtight"><span class="rlap mtight"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="inner"><span class="mord mtight"><span class="mrel mtight"></span></span></span><span class="fix"></span></span></span></span></span><span class="mrel mtight">=</span></span><span class="mord mathnormal mtight">i</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.4138em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">ji</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:1em;"></span><span class="mord">∀</span><span class="mord mathnormal">i</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">{</span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner">…</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mclose">}</span><span class="mspace" style="margin-right:1em;"></span><span class="mord text"><span class="mord">(</span><span class="mord cjk_fallback">流量平衡，进出相等</span><span class="mord">)</span></span></span></span></span></span></p>
+<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>0</mn></mrow><mrow><mi>n</mi><mo>−</mo><mn>1</mn><mo separator="true">,</mo><mi>j</mi><mo mathvariant="normal">≠</mo><mi>i</mi></mrow></munderover><msub><mi>x</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>≤</mo><mn>1</mn><mspace width="1em"><mi mathvariant="normal">∀</mi><mi>i</mi><mo>∈</mo><mo stretchy="false">{</mo><mn>0</mn><mo separator="true">,</mo><mo>…</mo><mo separator="true">,</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo stretchy="false">}</mo><mspace width="1em"><mtext>(每个城市最多有一个出边)</mtext></mspace></mspace></mrow><annotation encoding="application/x-tex"> \sum_{j=0}^{n-1, j \neq i} x_{ij} \leq 1 \quad \forall i \in \{0, \ldots, n-1\} \quad \text{(每个城市最多有一个出边)} 
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:3.297em;vertical-align:-1.4138em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.8832em;"><span style="top:-1.8723em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.05724em;">j</span><span class="mrel mtight">=</span><span class="mord mtight">0</span></span></span></span><span style="top:-3.05em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op">∑</span></span></span><span style="top:-4.3471em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span><span class="mbin mtight">−</span><span class="mord mtight">1</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.05724em;">j</span><span class="mrel mtight"><span class="mrel mtight"><span class="mord vbox mtight"><span class="thinbox mtight"><span class="rlap mtight"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="inner"><span class="mord mtight"><span class="mrel mtight"></span></span></span><span class="fix"></span></span></span></span></span><span class="mrel mtight">=</span></span><span class="mord mathnormal mtight">i</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.4138em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.05724em;">ij</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7335em;vertical-align:-0.0391em;"></span><span class="mord">1</span><span class="mspace" style="margin-right:1em;"></span><span class="mord">∀</span><span class="mord mathnormal">i</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">{</span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner">…</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mclose">}</span><span class="mspace" style="margin-right:1em;"></span><span class="mord text"><span class="mord">(</span><span class="mord cjk_fallback">每个城市最多有一个出边</span><span class="mord">)</span></span></span></span></span></span></p>
+<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>0</mn></mrow><mrow><mi>n</mi><mo>−</mo><mn>1</mn><mo separator="true">,</mo><mi>j</mi><mo mathvariant="normal">≠</mo><mi>i</mi></mrow></munderover><msub><mi>x</mi><mrow><mi>j</mi><mi>i</mi></mrow></msub><mo>≤</mo><mn>1</mn><mspace width="1em"><mi mathvariant="normal">∀</mi><mi>i</mi><mo>∈</mo><mo stretchy="false">{</mo><mn>0</mn><mo separator="true">,</mo><mo>…</mo><mo separator="true">,</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo stretchy="false">}</mo><mspace width="1em"><mtext>(每个城市最多有一个入边)</mtext></mspace></mspace></mrow><annotation encoding="application/x-tex"> \sum_{j=0}^{n-1, j \neq i} x_{ji} \leq 1 \quad \forall i \in \{0, \ldots, n-1\} \quad \text{(每个城市最多有一个入边)} 
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:3.297em;vertical-align:-1.4138em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.8832em;"><span style="top:-1.8723em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.05724em;">j</span><span class="mrel mtight">=</span><span class="mord mtight">0</span></span></span></span><span style="top:-3.05em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op">∑</span></span></span><span style="top:-4.3471em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span><span class="mbin mtight">−</span><span class="mord mtight">1</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.05724em;">j</span><span class="mrel mtight"><span class="mrel mtight"><span class="mord vbox mtight"><span class="thinbox mtight"><span class="rlap mtight"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="inner"><span class="mord mtight"><span class="mrel mtight"></span></span></span><span class="fix"></span></span></span></span></span><span class="mrel mtight">=</span></span><span class="mord mathnormal mtight">i</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.4138em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">ji</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7335em;vertical-align:-0.0391em;"></span><span class="mord">1</span><span class="mspace" style="margin-right:1em;"></span><span class="mord">∀</span><span class="mord mathnormal">i</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">{</span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner">…</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mclose">}</span><span class="mspace" style="margin-right:1em;"></span><span class="mord text"><span class="mord">(</span><span class="mord cjk_fallback">每个城市最多有一个入边</span><span class="mord">)</span></span></span></span></span></span></p>
+<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>0</mn></mrow><mrow><mi>n</mi><mo>−</mo><mn>1</mn><mo separator="true">,</mo><mi>j</mi><mo mathvariant="normal">≠</mo><mtext>start_city</mtext></mrow></munderover><msub><mi>x</mi><mrow><mtext>start_city</mtext><mo separator="true">,</mo><mi>j</mi></mrow></msub><mo>=</mo><mn>1</mn><mspace width="1em"><mtext>(将起点城市出边设置为1表示从这里出发)</mtext></mspace></mrow><annotation encoding="application/x-tex"> \sum_{j=0}^{n-1, j \neq \text{start\_city}} x_{\text{start\_city}, j} = 1 \quad \text{(将起点城市出边设置为1表示从这里出发)} 
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:3.3779em;vertical-align:-1.4138em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.9641em;"><span style="top:-1.8723em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.05724em;">j</span><span class="mrel mtight">=</span><span class="mord mtight">0</span></span></span></span><span style="top:-3.05em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op">∑</span></span></span><span style="top:-4.428em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span><span class="mbin mtight">−</span><span class="mord mtight">1</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.05724em;">j</span><span class="mrel mtight"><span class="mrel mtight"><span class="mord vbox mtight"><span class="thinbox mtight"><span class="rlap mtight"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="inner"><span class="mord mtight"><span class="mrel mtight"></span></span></span><span class="fix"></span></span></span></span></span><span class="mrel mtight">=</span></span><span class="mord text mtight"><span class="mord mtight">start_city</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.4138em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3175em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">start_city</span></span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.05724em;">j</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.367em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mspace" style="margin-right:1em;"></span><span class="mord text"><span class="mord">(</span><span class="mord cjk_fallback">将起点城市出边设置为</span><span class="mord">1</span><span class="mord cjk_fallback">表示从这里出发</span><span class="mord">)</span></span></span></span></span></span></p>
+<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mi>u</mi><mi>i</mi></msub><mo>−</mo><msub><mi>u</mi><mi>j</mi></msub><mo>+</mo><mi>n</mi><msub><mi>x</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>≤</mo><mi>n</mi><mo>−</mo><mn>1</mn><mspace width="1em"><mi mathvariant="normal">∀</mi><mi>i</mi><mo separator="true">,</mo><mi>j</mi><mo>∈</mo><mo stretchy="false">{</mo><mn>1</mn><mo separator="true">,</mo><mo>…</mo><mo separator="true">,</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo stretchy="false">}</mo><mo separator="true">,</mo><mi>i</mi><mo mathvariant="normal">≠</mo><mi>j</mi><mspace width="1em"><mtext>(MTZ约束，确保不被重复访问)</mtext></mspace></mspace></mrow><annotation encoding="application/x-tex"> u_i - u_j + n x_{ij} \leq n - 1 \quad \forall i, j \in \{1, \ldots, n-1\}, i \neq j \quad \text{(MTZ约束，确保不被重复访问)} 
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">u</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8694em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathnormal">u</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.05724em;">j</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.9221em;vertical-align:-0.2861em;"></span><span class="mord mathnormal">n</span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.05724em;">ij</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord">1</span><span class="mspace" style="margin-right:1em;"></span><span class="mord">∀</span><span class="mord mathnormal">i</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.05724em;">j</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">{</span><span class="mord">1</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner">…</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mclose">}</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">i</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel"><span class="mrel"><span class="mord vbox"><span class="thinbox"><span class="rlap"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="inner"><span class="mord"><span class="mrel"></span></span></span><span class="fix"></span></span></span></span></span><span class="mrel">=</span></span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.05724em;">j</span><span class="mspace" style="margin-right:1em;"></span><span class="mord text"><span class="mord">(MTZ</span><span class="mord cjk_fallback">约束，确保不被重复访问</span><span class="mord">)</span></span></span></span></span></span></p>
+<p>这里的n是城市的数量，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>=</mo><mn>50</mn></mrow><annotation encoding="application/x-tex">n=50</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">50</span></span></span></span>。</p>
+<p>对于MTZ约束，这里的<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>u</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">u_i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">u</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>是一个辅助变量，表示城市<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>i</mi></mrow><annotation encoding="application/x-tex">i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6595em;"></span><span class="mord mathnormal">i</span></span></span></span>的访问顺序。如果<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">x_{ij}=1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7167em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.05724em;">ij</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span>，那么<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>u</mi><mi>i</mi></msub><mo>−</mo><msub><mi>u</mi><mi>j</mi></msub><mo>≤</mo><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">u_i - u_j \leq -1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">u</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.9221em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathnormal">u</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.05724em;">j</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">−</span><span class="mord">1</span></span></span></span>，即$u_i \leq u_j-1 &lt; u_j $。这样就可以保证经过的u是增长的，即保证了城市的访问顺序。</p>
+<p>假设存在被重复访问的节点<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>v</mi><mn>1</mn></msub><msub><mi>v</mi><mn>2</mn></msub><msub><mi>v</mi><mn>3</mn></msub><msub><mi>v</mi><mn>4</mn></msub><mo separator="true">,</mo><mtext>其对应的</mtext><mi>u</mi><mtext>为</mtext><msub><mi>u</mi><mn>1</mn></msub><msub><mi>u</mi><mn>2</mn></msub><msub><mi>u</mi><mn>3</mn></msub><msub><mi>u</mi><mn>1</mn></msub><mo separator="true">,</mo><mtext>有</mtext><msub><mi>u</mi><mn>1</mn></msub><mo>&lt;</mo><msub><mi>u</mi><mn>2</mn></msub><mo>&lt;</mo><msub><mi>u</mi><mn>3</mn></msub><mo>&lt;</mo><msub><mi>u</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">v_1 v_2 v_3 v_4,其对应的u为u_1 u_2 u_3 u_1 , 有u_1&lt;u_2&lt;u_3&lt;u_1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">3</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">4</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord cjk_fallback">其对应的</span><span class="mord mathnormal">u</span><span class="mord cjk_fallback">为</span><span class="mord"><span class="mord mathnormal">u</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal">u</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal">u</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">3</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal">u</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord cjk_fallback">有</span><span class="mord"><span class="mord mathnormal">u</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6891em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">u</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6891em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">u</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">3</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">u</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>产生矛盾，所以会避免这种情况发生。</p>
+<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mi>x</mi><mrow><mi>i</mi><mi>i</mi></mrow></msub><mo>=</mo><mn>0</mn><mspace width="1em"><mi mathvariant="normal">∀</mi><mi>i</mi><mo>∈</mo><mo stretchy="false">{</mo><mn>0</mn><mo separator="true">,</mo><mo>…</mo><mo separator="true">,</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo stretchy="false">}</mo><mspace width="1em"><mtext>(防止自环，即防止原地绕圈)</mtext></mspace></mspace></mrow><annotation encoding="application/x-tex"> x_{ii} = 0 \quad \forall i \in \{0, \ldots, n-1\} \quad \text{(防止自环，即防止原地绕圈)} 
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">ii</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7335em;vertical-align:-0.0391em;"></span><span class="mord">0</span><span class="mspace" style="margin-right:1em;"></span><span class="mord">∀</span><span class="mord mathnormal">i</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">{</span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner">…</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mclose">}</span><span class="mspace" style="margin-right:1em;"></span><span class="mord text"><span class="mord">(</span><span class="mord cjk_fallback">防止自环，即防止原地绕圈</span><span class="mord">)</span></span></span></span></span></span></p>
+<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mtext>变量</mtext><mspace width="1em"><msub><mi>x</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>∈</mo><mo stretchy="false">{</mo><mn>0</mn><mo separator="true">,</mo><mn>1</mn><mo stretchy="false">}</mo><mspace width="1em"><mi mathvariant="normal">∀</mi><mi>i</mi><mo separator="true">,</mo><mi>j</mi><mo>∈</mo><mo stretchy="false">{</mo><mn>0</mn><mo separator="true">,</mo><mo>…</mo><mo separator="true">,</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo stretchy="false">}</mo></mspace></mspace></mrow><annotation encoding="application/x-tex">\text{变量} \quad  x_{ij} \in \{0, 1\} \quad \forall i, j \in \{0, \ldots, n-1\} 
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.9694em;vertical-align:-0.2861em;"></span><span class="mord text"><span class="mord cjk_fallback">变量</span></span><span class="mspace" style="margin-right:1em;"></span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.05724em;">ij</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">{</span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">1</span><span class="mclose">}</span><span class="mspace" style="margin-right:1em;"></span><span class="mord">∀</span><span class="mord mathnormal">i</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.05724em;">j</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">{</span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner">…</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mclose">}</span></span></span></span></span></p>
+<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mi>u</mi><mi>i</mi></msub><mo>∈</mo><mi mathvariant="double-struck">R</mi><mspace width="1em"><mi mathvariant="normal">∀</mi><mi>i</mi><mo>∈</mo><mo stretchy="false">{</mo><mn>0</mn><mo separator="true">,</mo><mo>…</mo><mo separator="true">,</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo stretchy="false">}</mo></mspace></mrow><annotation encoding="application/x-tex"> u_i \in \mathbb{R} \quad \forall i \in \{0, \ldots, n-1\}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6891em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">u</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7335em;vertical-align:-0.0391em;"></span><span class="mord mathbb">R</span><span class="mspace" style="margin-right:1em;"></span><span class="mord">∀</span><span class="mord mathnormal">i</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">{</span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner">…</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mclose">}</span></span></span></span></span></p>
+<h3 id="3-1-Python-Gurobipy求解">3.1 Python Gurobipy求解</h3>
+<p>这里生成300阶的随机数矩阵作为输入。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> gurobipy <span class="hljs-keyword">as</span> gp<br><span class="hljs-keyword">from</span> gurobipy <span class="hljs-keyword">import</span> GRB<br><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">solve_max_cities_with_time_constraint</span>(<span class="hljs-params">Gmatrix, max_time, start_city</span>):<br>    n = <span class="hljs-built_in">len</span>(Gmatrix)<br>    <span class="hljs-string">&#x27;&#x27;&#x27;</span><br><span class="hljs-string">    输入参数：时间矩阵 Gmatrix，最大时间 max_time，起点城市 start_city</span><br><span class="hljs-string">    输出参数：最佳路径 path，花费时间 total_time，访问的城市数量 cities_visited</span><br><span class="hljs-string">    &#x27;&#x27;&#x27;</span><br>    model = gp.Model(<span class="hljs-string">&quot;Max_Cities_with_Time_Constraint&quot;</span>)<br><br>    <span class="hljs-comment"># 决策变量：x[i, j] ,是否选择从城市 i 到城市 j 的路径</span><br>    x = model.addVars(n, n, vtype=GRB.BINARY, name=<span class="hljs-string">&quot;x&quot;</span>)<br><br>    <span class="hljs-comment"># 辅助变量：u[i] 用于避免子环</span><br>    u = model.addVars(n, vtype=GRB.CONTINUOUS, name=<span class="hljs-string">&quot;u&quot;</span>)<br><br>    <span class="hljs-comment"># 最大化访问的城市数量</span><br>    model.setObjective(gp.quicksum(x[i, j] <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n) <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n)), GRB.MAXIMIZE)<br><br>    <span class="hljs-comment"># 总时间花费 &lt;= max_time</span><br>    model.addConstr(gp.quicksum(Gmatrix[i][j] * x[i, j] <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n) <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n)) &lt;= max_time, <span class="hljs-string">&quot;time_limit&quot;</span>)<br><br>    <span class="hljs-comment"># 添加流量约束</span><br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">0</span>,n-<span class="hljs-number">1</span>):<br>        model.addConstr(gp.quicksum(x[i, j] <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n) <span class="hljs-keyword">if</span> j != i) == gp.quicksum(x[j, i] <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n) <span class="hljs-keyword">if</span> j != i), <span class="hljs-string">f&quot;flow_balance_<span class="hljs-subst">&#123;i&#125;</span>&quot;</span>)<br>        model.addConstr(gp.quicksum(x[i, j] <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n) <span class="hljs-keyword">if</span> j != i) &lt;= <span class="hljs-number">1</span>, <span class="hljs-string">f&quot;out_<span class="hljs-subst">&#123;i&#125;</span>&quot;</span>)<br>        model.addConstr(gp.quicksum(x[j, i] <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n) <span class="hljs-keyword">if</span> j != i) &lt;= <span class="hljs-number">1</span>, <span class="hljs-string">f&quot;in_<span class="hljs-subst">&#123;i&#125;</span>&quot;</span>)<br><br>    <span class="hljs-comment"># 添加起点约束：确保从指定的起点城市出发</span><br>    model.addConstr(gp.quicksum(x[start_city, j] <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n) <span class="hljs-keyword">if</span> j != start_city) == <span class="hljs-number">1</span>, <span class="hljs-string">&quot;start_city_out&quot;</span>)<br>    <span class="hljs-comment">#model.addConstr(gp.quicksum(x[i, start_city] for i in range(n) if i != start_city) == 0, &quot;start_city_in&quot;)</span><br><br>    <span class="hljs-comment"># 添加子环消除约束（MTZ约束）</span><br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, n):<br>        <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, n):<br>            <span class="hljs-keyword">if</span> i != j:<br>                model.addConstr(u[i] - u[j] + n * x[i, j] &lt;= n - <span class="hljs-number">1</span>, <span class="hljs-string">f&quot;mtz_<span class="hljs-subst">&#123;i&#125;</span>_<span class="hljs-subst">&#123;j&#125;</span>&quot;</span>)<br><br>    <span class="hljs-comment"># 防止自环</span><br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):<br>        model.addConstr(x[i, i] == <span class="hljs-number">0</span>, <span class="hljs-string">f&quot;no_self_loop_<span class="hljs-subst">&#123;i&#125;</span>&quot;</span>)<br><br>    <span class="hljs-comment"># 优化模型</span><br>    model.optimize()<br><br>    <span class="hljs-comment"># 检查是否找到最优解</span><br>    <span class="hljs-keyword">if</span> model.status == GRB.OPTIMAL:<br>        path = []<br>        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):<br>            <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):<br>                <span class="hljs-keyword">if</span> x[i, j].X &gt; <span class="hljs-number">0.5</span>:  <span class="hljs-comment"># 判断变量值是否为1</span><br>                    path.append((i, j))<br>        total_time = gp.quicksum(Gmatrix[i][j] * x[i, j].X <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n) <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n)).getValue()<br>        cities_visited = <span class="hljs-built_in">len</span>(<span class="hljs-built_in">set</span>([i <span class="hljs-keyword">for</span> i, j <span class="hljs-keyword">in</span> path] + [j <span class="hljs-keyword">for</span> i, j <span class="hljs-keyword">in</span> path]))<br>        <span class="hljs-keyword">return</span> path, total_time, cities_visited<br>    <span class="hljs-keyword">else</span>:<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;没有找到最优解&quot;</span>)<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>, <span class="hljs-literal">None</span>, <span class="hljs-number">0</span><br><br><span class="hljs-comment"># 用时间矩阵求解最大城市数目</span><br><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np<br>Gmatrix = np.random.randint(<span class="hljs-number">1</span>, <span class="hljs-number">1000</span>, (<span class="hljs-number">300</span>, <span class="hljs-number">300</span>))<br>max_time = <span class="hljs-number">144</span> - <span class="hljs-number">2.5</span> <span class="hljs-comment">#144减去在广州的2.5小时</span><br>path, total_time, cities_visited = solve_max_cities_with_time_constraint(Gmatrix, max_time,<span class="hljs-number">4</span>)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;最佳路径:&quot;</span>, path)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;花费时间:&quot;</span>, total_time+<span class="hljs-number">2.5</span>)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;访问的城市数量:&quot;</span>, cities_visited)<br></code></pre></td></tr></table></figure>
+<p>300阶的求解结果，用时645s：</p>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br></pre></td><td class="code"><pre><code class="hljs txt">Gurobi Optimizer version 11.0.2 build v11.0.2rc0 (win64 - Windows 11+.0 (26120.2))<br><br>CPU model: 11th Gen Intel(R) Core(TM) i5-1135G7 @ 2.40GHz, instruction set [SSE2|AVX|AVX2|AVX512]<br>Thread count: 4 physical cores, 8 logical processors, using up to 8 threads<br><br>Optimize a model with 90301 rows, 90300 columns and 715509 nonzeros<br>Model fingerprint: 0x96df0c90<br>Variable types: 300 continuous, 90000 integer (90000 binary)<br>Coefficient statistics:<br>  Matrix range     [1e+00, 1e+03]<br>  Objective range  [1e+00, 1e+00]<br>  Bounds range     [1e+00, 1e+00]<br>  RHS range        [1e+00, 3e+02]<br>Presolve removed 318 rows and 77810 columns<br>Presolve time: 3.95s<br>Presolved: 89983 rows, 12490 columns, 249326 nonzeros<br>Variable types: 299 continuous, 12191 integer (12191 binary)<br><br>Deterministic concurrent LP optimizer: primal and dual simplex (primal and dual model)<br>Showing primal log only...<br><br>Root relaxation presolved: 12490 rows, 102174 columns, 261517 nonzeros<br><br><br>Root simplex log...<br><br>Iteration    Objective       Primal Inf.    Dual Inf.      Time<br>       0    4.3750000e+02   0.000000e+00   2.805988e+04      5s<br>Concurrent spin time: 0.09s<br><br>Solved with dual simplex<br><br>Root relaxation: objective 6.434205e+01, 1347 iterations, 0.86 seconds (0.28 work units)<br><br>    Nodes    |    Current Node    |     Objective Bounds      |     Work<br> Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time<br><br>     0     0   64.34205    0   34          -   64.34205      -     -    5s<br>     0     0   64.03846    0   31          -   64.03846      -     -   11s<br>     0     0   63.92804    0   31          -   63.92804      -     -   16s<br>     0     0   63.92804    0   41          -   63.92804      -     -   17s<br>     0     0   63.92804    0   41          -   63.92804      -     -   21s<br>H    0     0                       7.0000000   63.92804   813%     -   21s<br>     0     0   63.92804    0   33    7.00000   63.92804   813%     -   21s<br>H    0     0                       9.0000000   63.92804   610%     -   44s<br>     0     0   63.92804    0   33    9.00000   63.92804   610%     -   44s<br>     0     0   63.92804    0   39    9.00000   63.92804   610%     -   45s<br>     0     0   63.92804    0   39    9.00000   63.92804   610%     -   53s<br>     0     0   63.92804    0   39    9.00000   63.92804   610%     -   53s<br>     0     0   63.88293    0   49    9.00000   63.88293   610%     -   57s<br>     0     0   63.88293    0   49    9.00000   63.88293   610%     -   58s<br>     0     0   63.88293    0   49    9.00000   63.88293   610%     -   62s<br>     0     0   63.88293    0   49    9.00000   63.88293   610%     -   62s<br>     0     0   63.88293    0   33    9.00000   63.88293   610%     -   66s<br>     0     0   63.88293    0   39    9.00000   63.88293   610%     -   67s<br>H    0     0                      19.0000000   63.88293   236%     -   80s<br>     0     0   63.88293    0   39   19.00000   63.88293   236%     -   80s<br>     0     0   63.88293    0   39   19.00000   63.88293   236%     -   81s<br>     0     0   63.88293    0   39   19.00000   63.88293   236%     -   85s<br>     0     0   63.88293    0   41   19.00000   63.88293   236%     -   86s<br>     0     0   63.88293    0   41   19.00000   63.88293   236%     -   89s<br>     0     0   63.88293    0   41   19.00000   63.88293   236%     -   90s<br>     0     0   63.84848    0   59   19.00000   63.84848   236%     -   94s<br>     0     0   63.84848    0   59   19.00000   63.84848   236%     -   95s<br>     0     0   63.84848    0   59   19.00000   63.84848   236%     -   98s<br>     0     0   63.84848    0   59   19.00000   63.84848   236%     -   99s<br>     0     0   63.84848    0   60   19.00000   63.84848   236%     -  102s<br>     0     0   63.84848    0   61   19.00000   63.84848   236%     -  103s<br>     0     0   63.84848    0   61   19.00000   63.84848   236%     -  105s<br>     0     0   63.84848    0   61   19.00000   63.84848   236%     -  106s<br>     0     0   63.84848    0   61   19.00000   63.84848   236%     -  108s<br>     0     0   63.84848    0   61   19.00000   63.84848   236%     -  109s<br>     0     0   63.84848    0   61   19.00000   63.84848   236%     -  110s<br>     0     0   63.81818    0   34   19.00000   63.81818   236%     -  118s<br>     0     0   63.76923    0   41   19.00000   63.76923   236%     -  125s<br>     0     0   63.66450    0   39   19.00000   63.66450   235%     -  135s<br>     0     0   63.66450    0   39   19.00000   63.66450   235%     -  135s<br>     0     0   63.66450    0   39   19.00000   63.66450   235%     -  136s<br>     0     0   63.66450    0   39   19.00000   63.66450   235%     -  140s<br>     0     0   63.66450    0   49   19.00000   63.66450   235%     -  140s<br>     0     0   63.66450    0   49   19.00000   63.66450   235%     -  140s<br>     0     0   63.66450    0   49   19.00000   63.66450   235%     -  141s<br>     0     0   63.66450    0   60   19.00000   63.66450   235%     -  144s<br>     0     0   63.66450    0   61   19.00000   63.66450   235%     -  144s<br>     0     0   63.66450    0   61   19.00000   63.66450   235%     -  145s<br>     0     0   63.66450    0   54   19.00000   63.66450   235%     -  145s<br>H    0     0                      21.0000000   63.66450   203%     -  150s<br>     0     0   63.66450    0   54   21.00000   63.66450   203%     -  150s<br>     0     0   63.66450    0   54   21.00000   63.66450   203%     -  151s<br>     0     2   63.00000    0   54   21.00000   63.00000   200%     -  163s<br>     3     8   63.00000    2   51   21.00000   63.00000   200%  76.3  167s<br>    11    16   62.89189    4   44   21.00000   63.00000   200%  60.7  171s<br>    23    28   62.85714    6   46   21.00000   63.00000   200%  55.7  175s<br>    35    40   62.78824    8   40   21.00000   63.00000   200%  60.7  180s<br>    47    52   62.33333   11   25   21.00000   63.00000   200%  54.0  249s<br>H   49    52                      48.0000000   63.00000  31.3%  52.8  249s<br>    51    56   62.31606   12   59   48.00000   63.00000  31.3%  52.1  252s<br>H   52    56                      50.0000000   63.00000  26.0%  51.1  252s<br>    63    72   62.30566   15   71   50.00000   63.00000  26.0%  46.6  255s<br>    92    96   62.29142   22   72   50.00000   63.00000  26.0%  38.7  260s<br>   136   121   62.27479   29   55   50.00000   63.00000  26.0%  35.9  265s<br>   164   159   62.24837   33   57   50.00000   63.00000  26.0%  52.0  271s<br>   194   186   62.23794   38   54   50.00000   63.00000  26.0%  50.6  275s<br>   253   245   62.21036   48   53   50.00000   63.00000  26.0%  43.0  281s<br>   285   275   62.18348   55   57   50.00000   63.00000  26.0%  40.1  287s<br>   303   298   62.16999   60   41   50.00000   63.00000  26.0%  39.7  291s<br>   327   299   61.82886   34   61   50.00000   63.00000  26.0%  39.0  313s<br>   329   300   61.74333   58   34   50.00000   63.00000  26.0%  38.8  319s<br>   330   301   62.18166   55   39   50.00000   63.00000  26.0%  38.7  321s<br>   332   302   60.30097   17   54   50.00000   63.00000  26.0%  38.4  325s<br>   335   304   63.00000   60   44   50.00000   63.00000  26.0%  38.1  333s<br>   337   306   61.80000    3   70   50.00000   63.00000  26.0%  37.9  339s<br>   339   307   61.66667    9   45   50.00000   63.00000  26.0%  37.6  340s<br>   340   308   59.91273   25   45   50.00000   63.00000  26.0%  37.5  345s<br>   342   309   63.00000   25   66   50.00000   63.00000  26.0%  37.3  352s<br>   344   310   62.14956   10   85   50.00000   63.00000  26.0%  37.1  358s<br>   345   311   56.91556   65   67   50.00000   63.00000  26.0%  37.0  360s<br>   347   312   59.86378   32   93   50.00000   63.00000  26.0%  36.8  366s<br>   349   314   60.26698   19   74   50.00000   63.00000  26.0%  36.6  372s<br>   350   314   61.25759   27   86   50.00000   63.00000  26.0%  36.5  375s<br>   353   316   61.99417   17   83   50.00000   63.00000  26.0%  36.2  380s<br>   356   318   61.14295   12   93   50.00000   63.00000  26.0%  35.8  400s<br>   359   320   61.85048   27  103   50.00000   63.00000  26.0%  35.5  405s<br>   360   321   61.14295   12  103   50.00000   62.99272  26.0%  35.5  424s<br>   361   325   62.99272   10   58   50.00000   62.99272  26.0%  45.6  426s<br>   367   331   62.99272   12   55   50.00000   62.99272  26.0%  47.4  432s<br>   375   336   62.96010   13   44   50.00000   62.99272  26.0%  50.8  436s<br>   383   341   62.86096   14   42   50.00000   62.99272  26.0%  53.3  440s<br>   395   349   62.11111   15   15   50.00000   62.99272  26.0%  54.9  447s<br>   403   356   61.25000   16   34   50.00000   62.99272  26.0%  56.1  450s<br>   412   361   62.40000   17   20   50.00000   62.99272  26.0%  59.9  455s<br>   416   363   62.40000   18    8   50.00000   62.99272  26.0%  61.1  461s<br>   420   366   61.31286   18   43   50.00000   62.99272  26.0%  61.9  476s<br>   429   374   62.35294   19   13   50.00000   62.99272  26.0%  62.9  480s<br>   442   384   62.29723   21   50   50.00000   62.99272  26.0%  63.8  485s<br>   458   396   62.29275   23   50   50.00000   62.99272  26.0%  69.5  492s<br>   467   403   62.28421   24   16   50.00000   62.99272  26.0%  71.6  495s<br>   489   411   59.28889   26   24   50.00000   62.99272  26.0%  81.3  503s<br>   497   424   62.27544   27   33   50.00000   62.99272  26.0%  83.8  508s<br>   513   430   62.26671   29   29   50.00000   62.99272  26.0%  87.0  512s<br>   527   435   62.26296   30   23   50.00000   62.99272  26.0%  91.9  515s<br>   562   452   62.25516   33   45   50.00000   62.99272  26.0%  94.7  523s<br>   577   464   62.25351   35   32   50.00000   62.99272  26.0%   102  529s<br>   594   472   62.25029   37   27   50.00000   62.99272  26.0%   107  534s<br>   608   481   59.98667   38   39   50.00000   62.99272  26.0%   112  539s<br>   624   488   62.24442   41   35   50.00000   62.99272  26.0%   115  543s<br>   638   493   60.66667   43   13   50.00000   62.99272  26.0%   124  548s<br>   658   505   62.23658   44   46   50.00000   62.99272  26.0%   123  554s<br>   686   517   62.22725   46   45   50.00000   62.99272  26.0%   123  559s<br>   708   528   62.22636   47   36   50.00000   62.99272  26.0%   126  564s<br>   726   536   62.20935   50   56   50.00000   62.99272  26.0%   130  569s<br>   746   546   62.20697   52   56   50.00000   62.99272  26.0%   135  576s<br>   765   560   62.19752   55   29   50.00000   62.99272  26.0%   139  584s<br>   789   570   62.19413   57   35   50.00000   62.99272  26.0%   143  588s<br>   813   565     cutoff   59        50.00000   62.99272  26.0%   146  604s<br>H  814   534                      54.0000000   62.99272  16.7%   146  604s<br>H  815   363                      59.0000000   62.99272  6.77%   146  604s<br>H  816   348                      60.0000000   62.99272  4.99%   146  604s<br>   818   344     cutoff   60        60.00000   62.99272  4.99%   146  608s<br>   882   338   62.18854   64   34   60.00000   62.99272  4.99%   145  613s<br>   951   326   62.95358   24   42   60.00000   62.99272  4.99%   143  618s<br>* 1009   293              27      61.0000000   62.98422  3.25%   139  618s<br>  1055   240   62.67102   19   39   61.00000   62.92606  3.16%   135  624s<br>  1132   197 infeasible   18        61.00000   62.81818  2.98%   134  632s<br>  1230   177 infeasible   21        61.00000   62.73681  2.85%   130  639s<br>  1345    51   62.31475   21   35   61.00000   62.60114  2.62%   123  645s<br><br>Cutting planes:<br>  Gomory: 3<br>  Cover: 1<br>  Implied bound: 19<br>  MIR: 21<br>  Mixing: 1<br>  StrongCG: 1<br>  Flow cover: 94<br>  Inf proof: 2<br>  Zero half: 1<br>  Mod-K: 1<br>  RLT: 1<br><br>Explored 1577 nodes (175523 simplex iterations) in 647.07 seconds (337.60 work units)<br>Thread count was 8 (of 8 available processors)<br><br>Solution count 10: 61 60 59 ... 7<br><br>Optimal solution found (tolerance 1.00e-04)<br>Best objective 6.100000000000e+01, best bound 6.100000000000e+01, gap 0.0000%<br>最佳路径: [(0, 211), (4, 100), (21, 150), (23, 273), (25, 171), (34, 126), (44, 280), (48, 162), (49, 215), (57, 208), (64, 170), (65, 114), (69, 173), (73, 132), (75, 73), (78, 116), (88, 21), (92, 276), (96, 0), (100, 175), (105, 161), (106, 25), (114, 78), (116, 154), (119, 260), (122, 23), (126, 57), (132, 298), (134, 135), (135, 287), (143, 232), (150, 241), (154, 259), (158, 64), (161, 119), (162, 198), (170, 34), (171, 192), (173, 214), (175, 184), (184, 222), (192, 290), (198, 256), (208, 288), (211, 49), (214, 158), (215, 48), (222, 96), (232, 69), (241, 92), (256, 122), (259, 75), (260, 44), (266, 106), (273, 65), (276, 266), (280, 143), (287, 105), (288, 4), (290, 134), (298, 88)]<br>花费时间: 142.5<br>访问的城市数量: 61<br><br></code></pre></td></tr></table></figure>
+<p>考虑到300阶过大，换成50阶的，用时0.1s：</p>
+<figure class="highlight tap"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><code class="hljs tap">Gurobi Optimizer version 11.0.2 build v11.0.2rc0 (win64 - Windows 11+.0 (26120.2))<br><br>CPU model: 11th Gen Intel(R) Core(TM) i5-1135G7 @ 2.40GHz, instruction set [SSE2|AVX|AVX2|AVX512]<br>Thread count:<span class="hljs-number"> 4 </span>physical cores,<span class="hljs-number"> 8 </span>logical processors, using up to<span class="hljs-number"> 8 </span>threads<br><br>Optimize a model with<span class="hljs-number"> 2551 </span>rows,<span class="hljs-number"> 2550 </span>columns and<span class="hljs-number"> 19259 </span>nonzeros<br>Model fingerprint: 0x1d9ad627<br>Variable types:<span class="hljs-number"> 50 </span>continuous,<span class="hljs-number"> 2500 </span>integer (2500 binary)<br>Coefficient statistics:<br>  Matrix range     [1e+00, 1e+03]<br>  Objective range  [1e+00, 1e+00]<br>  Bounds range     [1e+00, 1e+00]<br>  RHS range        [1e+00, 1e+02]<br>Presolve removed<span class="hljs-number"> 1432 </span>rows and<span class="hljs-number"> 2438 </span>columns<br>Presolve time: 0.08s<br>Presolved:<span class="hljs-number"> 1119 </span>rows,<span class="hljs-number"> 112 </span>columns,<span class="hljs-number"> 2786 </span>nonzeros<br>Variable types:<span class="hljs-number"> 33 </span>continuous,<span class="hljs-number"> 79 </span>integer (79 binary)<br><br>Root relaxation: objective 1.276923e+01,<span class="hljs-number"> 175 </span>iterations, 0.00 seconds (0.00 work units)<br><br>    Nodes    |    Current Node    |     Objective Bounds      |     Work<br> Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time<br><br>    <span class="hljs-number"> 0 </span>   <span class="hljs-number"> 0 </span>  12.76923   <span class="hljs-number"> 0 </span> <span class="hljs-number"> 10 </span>         -   12.76923      -     -    0s<br>    <span class="hljs-number"> 0 </span>   <span class="hljs-number"> 0 </span>  12.47012   <span class="hljs-number"> 0 </span> <span class="hljs-number"> 10 </span>         -   12.47012      -     -    0s<br>H   <span class="hljs-number"> 0 </span>   <span class="hljs-number"> 0 </span>                      5.0000000   12.47012   149%     -    0s<br>    <span class="hljs-number"> 0 </span>   <span class="hljs-number"> 0 </span>  11.37942   <span class="hljs-number"> 0 </span> <span class="hljs-number"> 16 </span>   5.00000   11.37942   128%     -    0s<br>H   <span class="hljs-number"> 0 </span>   <span class="hljs-number"> 0 </span>                      7.0000000   11.25101  60.7%     -    0s<br>H   <span class="hljs-number"> 0 </span>   <span class="hljs-number"> 0 </span>                      9.0000000   11.02273  22.5%     -    0s<br>    <span class="hljs-number"> 0 </span>   <span class="hljs-number"> 0 </span>  11.02273   <span class="hljs-number"> 0 </span> <span class="hljs-number"> 16 </span>   9.00000   11.02273  22.5%     -    0s<br>    <span class="hljs-number"> 0 </span>   <span class="hljs-number"> 0 </span>  11.02273   <span class="hljs-number"> 0 </span> <span class="hljs-number"> 10 </span>   9.00000   11.02273  22.5%     -    0s<br>H   <span class="hljs-number"> 0 </span>   <span class="hljs-number"> 0 </span>                     10.0000000   11.02273  10.2%     -    0s<br><br>Cutting planes:<br>  Gomory: 1<br>  Implied bound: 6<br><br>Explored<span class="hljs-number"> 1 </span>nodes (210 simplex iterations) in 0.20 seconds (0.10 work units)<br>Thread count was<span class="hljs-number"> 8 </span>(of<span class="hljs-number"> 8 </span>available processors)<br><br>Solution count 4:<span class="hljs-number"> 10 </span>9<span class="hljs-number"> 7 </span>5 <br><br>Optimal solution found (tolerance 1.00e-04)<br>Best objective 1.000000000000e+01, best bound 1.000000000000e+01, gap 0.0000%<br>最佳路径: [(0, 23), (1, 12), (4, 46), (12, 4), (13, 35), (19, 1), (23, 13), (35, 19), (42, 0), (46, 42)]<br>花费时间: 120.5<br>访问的城市数量: 10<br></code></pre></td></tr></table></figure>
+<h3 id="3-2-Matlab-求解器">3.2 Matlab 求解器</h3>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br></pre></td><td class="code"><pre><code class="hljs matlab"><br><span class="hljs-comment">% 用时间矩阵求解最大城市数目</span><br><span class="hljs-built_in">disp</span>(<span class="hljs-string">&#x27;求解开始时间为：&#x27;</span>);<br>s = datetime(<span class="hljs-string">&#x27;now&#x27;</span>)<br>Gmatrix = randi([<span class="hljs-number">1</span>, <span class="hljs-number">1000</span>], <span class="hljs-number">300</span>, <span class="hljs-number">300</span>);<br>max_time = <span class="hljs-number">144</span> - <span class="hljs-number">2.5</span>; <span class="hljs-comment">% 144减去在广州的2.5小时</span><br>[path, total_time, cities_visited] = solve_max_cities_with_time_constraint(Gmatrix, max_time, <span class="hljs-number">4</span>);<br><span class="hljs-built_in">disp</span>(<span class="hljs-string">&#x27;最佳路径:&#x27;</span>);<br><span class="hljs-built_in">disp</span>(path);<br><span class="hljs-built_in">disp</span>(<span class="hljs-string">&#x27;花费时间:&#x27;</span>);<br><span class="hljs-built_in">disp</span>(total_time + <span class="hljs-number">2.5</span>);<br><span class="hljs-built_in">disp</span>(<span class="hljs-string">&#x27;访问的城市数量:&#x27;</span>);<br><span class="hljs-built_in">disp</span>(cities_visited);<br><span class="hljs-built_in">disp</span>(<span class="hljs-string">&#x27;求解结束时间为：&#x27;</span>);<br>e = datetime(<span class="hljs-string">&#x27;now&#x27;</span>)<br><span class="hljs-built_in">disp</span>(<span class="hljs-string">&#x27;求解耗时：&#x27;</span> , e - s);<br><br><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">[path, total_time, cities_visited]</span> = <span class="hljs-title">solve_max_cities_with_time_constraint</span><span class="hljs-params">(Gmatrix, max_time, start_city)</span></span><br>    n = <span class="hljs-built_in">size</span>(Gmatrix, <span class="hljs-number">1</span>);<br>    <span class="hljs-comment">% 输入参数：时间矩阵 Gmatrix，最大时间 max_time，起点城市 start_city</span><br>    <span class="hljs-comment">% 输出参数：最佳路径 path，花费时间 total_time，访问的城市数量 cities_visited</span><br><br>    <span class="hljs-comment">% 创建模型</span><br>    model = optimproblem(<span class="hljs-string">&#x27;ObjectiveSense&#x27;</span>, <span class="hljs-string">&#x27;maximize&#x27;</span>);<br><br>    <span class="hljs-comment">% 决策变量：x(i, j) ,是否选择从城市 i 到城市 j 的路径</span><br>    x = optimvar(<span class="hljs-string">&#x27;x&#x27;</span>, n, n, <span class="hljs-string">&#x27;Type&#x27;</span>, <span class="hljs-string">&#x27;integer&#x27;</span>, <span class="hljs-string">&#x27;LowerBound&#x27;</span>, <span class="hljs-number">0</span>, <span class="hljs-string">&#x27;UpperBound&#x27;</span>, <span class="hljs-number">1</span>);<br><br>    <span class="hljs-comment">% 辅助变量：u(i) 用于避免子环</span><br>    u = optimvar(<span class="hljs-string">&#x27;u&#x27;</span>, n, <span class="hljs-string">&#x27;Type&#x27;</span>, <span class="hljs-string">&#x27;continuous&#x27;</span>, <span class="hljs-string">&#x27;LowerBound&#x27;</span>, <span class="hljs-number">0</span>);<br><br>    <span class="hljs-comment">% 最大化访问的城市数量</span><br>    model.Objective = sum(x, <span class="hljs-string">&#x27;all&#x27;</span>);<br><br>    <span class="hljs-comment">% 总时间花费 &lt;= max_time</span><br>    model.Constraints.time_limit = sum(sum(Gmatrix .* x)) &lt;= max_time;<br><br>    <span class="hljs-comment">% 添加流量约束</span><br>    <span class="hljs-keyword">for</span> <span class="hljs-built_in">i</span> = <span class="hljs-number">1</span>:n<span class="hljs-number">-1</span><br>        model.Constraints.([<span class="hljs-string">&#x27;flow_balance_&#x27;</span>, num2str(<span class="hljs-built_in">i</span>)]) = sum(x(<span class="hljs-built_in">i</span>, :)) == sum(x(:, <span class="hljs-built_in">i</span>));<br>        model.Constraints.([<span class="hljs-string">&#x27;out_&#x27;</span>, num2str(<span class="hljs-built_in">i</span>)]) = sum(x(<span class="hljs-built_in">i</span>, :)) &lt;= <span class="hljs-number">1</span>;<br>        model.Constraints.([<span class="hljs-string">&#x27;in_&#x27;</span>, num2str(<span class="hljs-built_in">i</span>)]) = sum(x(:, <span class="hljs-built_in">i</span>)) &lt;= <span class="hljs-number">1</span>;<br>    <span class="hljs-keyword">end</span><br><br>    <span class="hljs-comment">% 添加起点约束：确保从指定的起点城市出发</span><br>    model.Constraints.start_city_out = sum(x(start_city, :)) == <span class="hljs-number">1</span>;<br><br>    <span class="hljs-comment">% 添加子环消除约束（MTZ约束）</span><br>    <span class="hljs-keyword">for</span> <span class="hljs-built_in">i</span> = <span class="hljs-number">2</span>:n<br>        <span class="hljs-keyword">for</span> <span class="hljs-built_in">j</span> = <span class="hljs-number">2</span>:n<br>            <span class="hljs-keyword">if</span> <span class="hljs-built_in">i</span> ~= <span class="hljs-built_in">j</span><br>                model.Constraints.([<span class="hljs-string">&#x27;mtz_&#x27;</span>, num2str(<span class="hljs-built_in">i</span>), <span class="hljs-string">&#x27;_&#x27;</span>, num2str(<span class="hljs-built_in">j</span>)]) = u(<span class="hljs-built_in">i</span>) - u(<span class="hljs-built_in">j</span>) + n * x(<span class="hljs-built_in">i</span>, <span class="hljs-built_in">j</span>) &lt;= n - <span class="hljs-number">1</span>;<br>            <span class="hljs-keyword">end</span><br>        <span class="hljs-keyword">end</span><br>    <span class="hljs-keyword">end</span><br><br>    <span class="hljs-comment">% 防止自环</span><br>    <span class="hljs-keyword">for</span> <span class="hljs-built_in">i</span> = <span class="hljs-number">1</span>:n<br>        model.Constraints.([<span class="hljs-string">&#x27;no_self_loop_&#x27;</span>, num2str(<span class="hljs-built_in">i</span>)]) = x(<span class="hljs-built_in">i</span>, <span class="hljs-built_in">i</span>) == <span class="hljs-number">0</span>;<br>    <span class="hljs-keyword">end</span><br><br>    <span class="hljs-comment">% 求解模型</span><br>    options = optimoptions(<span class="hljs-string">&#x27;intlinprog&#x27;</span>, <span class="hljs-string">&#x27;Display&#x27;</span>, <span class="hljs-string">&#x27;iter&#x27;</span>);<br>    [sol, fval, exitflag] = solve(model, <span class="hljs-string">&#x27;Options&#x27;</span>, options);<br><br>    <span class="hljs-comment">% 检查是否找到最优解</span><br>    <span class="hljs-keyword">if</span> exitflag == <span class="hljs-number">1</span><br>        path = [];<br>        <span class="hljs-keyword">for</span> <span class="hljs-built_in">i</span> = <span class="hljs-number">1</span>:n<br>            <span class="hljs-keyword">for</span> <span class="hljs-built_in">j</span> = <span class="hljs-number">1</span>:n<br>                <span class="hljs-keyword">if</span> sol.x(<span class="hljs-built_in">i</span>, <span class="hljs-built_in">j</span>) &gt; <span class="hljs-number">0.5</span>  <span class="hljs-comment">% 判断变量值是否为1</span><br>                    path = [path; <span class="hljs-built_in">i</span>, <span class="hljs-built_in">j</span>];<br>                <span class="hljs-keyword">end</span><br>            <span class="hljs-keyword">end</span><br>        <span class="hljs-keyword">end</span><br>        total_time = sum(sum(Gmatrix .* sol.x));<br>        cities_visited = <span class="hljs-built_in">length</span>(unique([path(:, <span class="hljs-number">1</span>); path(:, <span class="hljs-number">2</span>)]));<br>    <span class="hljs-keyword">else</span><br>        <span class="hljs-built_in">disp</span>(<span class="hljs-string">&#x27;没有找到最优解&#x27;</span>);<br>        path = [];<br>        total_time = <span class="hljs-number">0</span>;<br>        cities_visited = <span class="hljs-number">0</span>;<br>    <span class="hljs-keyword">end</span><br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p>遗憾的是在300阶的情况下，Matlab求解了1个小时都没有求解出来，可能永远也求不出来了。</p>
+<p>换成50阶的,用时124s：</p>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><code class="hljs txt">&gt;&gt; solve<br>求解开始时间为：<br><br>s = <br><br>  datetime<br><br>   2024-08-31 18:23:42<br><br><br><br>将使用 intlinprog 求解问题。<br><br>LP:                Optimal objective value is 10.651563.                                            <br><br><br>Cut Generation:    Applied 3 Gomory cuts, 5 mir cuts,                                               <br>                   and 1 cover cut.                                                                 <br>                   Upper bound is 9.000000.                                                         <br><br><br>Branch and Bound:<br><br><br>   nodes     total   num int        integer       relative                                          <br>explored  time (s)  solution           fval        gap (%)                                         <br>      24      0.68         1   7.000000e+00   1.250000e+01                                          <br>      27      0.69         1   7.000000e+00   1.250000e+01                                          <br><br>找到最优解。<br><br>Intlinprog 已停止，因为目标值在最佳值的间隙容差范围内，options.RelativeGapTolerance = 0.0001。intcon 变量是容差范围内的整<br>数，options.IntegerTolerance = 1e-05。<br><br><br>最佳路径:<br>     1    44<br>     4    13<br>    13     1<br>    27    37<br>    29    27<br>    37     4<br>    44    29<br><br><br>花费时间:<br>  124.5000<br><br><br>访问的城市数量:<br>     7<br><br><br>求解结束时间为：<br><br>e = <br><br>  datetime<br><br>   2024-08-31 18:24:23<br><br></code></pre></td></tr></table></figure>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="../../../../tags/math-coding/" class="print-no-link">#math,coding</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>TSP问题的优化求解</div>
+      <div>https://silenzio111.github.io/2024/08/31/opttsp/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>silenzio</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年8月31日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="../../../../2024/09/03/kernelchoice/" title="优雅地选取jupyter内核">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">优雅地选取jupyter内核</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="../../../../2024/08/20/graph/" title="图论与图算法">
+                        <span class="hidden-mobile">图论与图算法</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <span>© 2024 Silenzio</span> , Powered by <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":true,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="../../../../js/events.js" ></script>
+<script  src="../../../../js/plugins.js" ></script>
+
+
+
+
+
+  
+    <script  src="../../../../js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  var relativeDate = function() {
+    var updatedTime = document.getElementById('updated-time');
+    if (updatedTime) {
+      var text = updatedTime.textContent;
+      var reg = /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:Z|[+-]\d{2}:\d{2})/;
+      var matchs = text.match(reg);
+      if (matchs) {
+        var relativeTime = moment(matchs[0]).fromNow();
+        updatedTime.textContent = text.replace(reg, relativeTime);
+      }
+      updatedTime.style.display = '';
+    }
+  };
+  Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/moment.min.js', function() {
+    if (!'zh-cn'.startsWith('en')) {
+      Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/locale/zh-cn.min.js', function() {
+        relativeDate();
+      });
+    } else {
+      relativeDate();
+    }
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="../../../../js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="../../../../js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
