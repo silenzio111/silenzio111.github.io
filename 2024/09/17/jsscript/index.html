@@ -16,22 +16,22 @@
   <meta name="author" content="silenzio">
   <meta name="keywords" content="">
   
-    <meta name="description" content="人间忽晚，山河渐秋。">
+    <meta name="description" content="test">
 <meta property="og:type" content="article">
-<meta property="og:title" content="随笔">
-<meta property="og:url" content="https://silenzio111.github.io/2023/10/29/post/">
+<meta property="og:title" content="jsscript">
+<meta property="og:url" content="https://silenzio111.github.io/2024/09/17/jsscript/">
 <meta property="og:site_name" content="Silenzio&#39;s Blog">
-<meta property="og:description" content="人间忽晚，山河渐秋。">
+<meta property="og:description" content="test">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2023-10-29T14:30:49.000Z">
-<meta property="article:modified_time" content="2023-11-26T10:42:38.921Z">
+<meta property="article:published_time" content="2024-09-17T11:43:00.000Z">
+<meta property="article:modified_time" content="2024-09-17T11:54:40.875Z">
 <meta property="article:author" content="silenzio">
-<meta property="article:tag" content="life_record">
+<meta property="article:tag" content="code">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>随笔 - Silenzio&#39;s Blog</title>
+  <title>jsscript - Silenzio&#39;s Blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -211,7 +211,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="随笔"></span>
+            <span id="subtitle" data-typed-text="jsscript"></span>
           
         </div>
 
@@ -222,8 +222,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2023-10-29 22:30" pubdate>
-          2023年10月29日 晚上
+        <time datetime="2024-09-17 19:43" pubdate>
+          2024年9月17日 晚上
         </time>
       </span>
     
@@ -234,7 +234,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          8 字
+          53 字
         
       </span>
     
@@ -295,12 +295,12 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">随笔</h1>
+            <h1 id="seo-header">jsscript</h1>
             
               <p id="updated-time" class="note note-info" style="display: none">
                 
                   
-                    本文最后更新于 2023-11-26T18:42:38+08:00
+                    本文最后更新于 2024-09-17T19:54:40+08:00
                   
                   
 
@@ -310,7 +310,41 @@
             
               <div class="markdown-body">
                 
-                <p>人间忽晚，山河渐秋。</p>
+                <html>
+<head>
+  <title>Pyodide Example</title>
+  <!-- 引入 Pyodide 脚本 -->
+  <script src="https://cdn.jsdelivr.net/pyodide/v0.23.3/full/pyodide.js"></script>
+</head>
+<body>
+  <h1>Hello, Pyodide!</h1>
+<p><button id="run_python">运行 Python</button></p>
+  <pre id="output"></pre>
+  <script>
+    async function loadPyodideAndRun() {
+      // 加载 Pyodide
+      let pyodide = await loadPyodide();
+
+      // Python 代码
+      let code = `
+      import math
+      def fuck(num):
+      	return math.pi ** 100
+      fuck(num)
+      `;
+    
+      // 执行 Python 代码
+      let result = await pyodide.runPythonAsync(code);
+    
+      // 显示结果
+      document.getElementById('output').innerText = `Python 结果: ${result}`;
+    }
+    
+    // 为按钮添加点击事件
+    document.getElementById('run_python').addEventListener('click', loadPyodideAndRun);
+  </script>
+</body>
+</html>
 
                 
               </div>
@@ -323,7 +357,7 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="../../../../tags/life-record/" class="print-no-link">#life_record</a>
+        <a href="../../../../tags/code/" class="print-no-link">#code</a>
       
     </div>
   
@@ -335,8 +369,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>随笔</div>
-      <div>https://silenzio111.github.io/2023/10/29/post/</div>
+      <div>jsscript</div>
+      <div>https://silenzio111.github.io/2024/09/17/jsscript/</div>
     </div>
     <div class="license-meta">
       
@@ -348,7 +382,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2023年10月29日</div>
+          <div>2024年9月17日</div>
         </div>
       
       
@@ -380,15 +414,15 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="../../../../2023/11/23/code/" title="code">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">code</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
+                    
+                      <a href="../../../../2024/09/09/2024A/" title="2024cumcm">
+                        <span class="hidden-mobile">2024cumcm</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
                     
                   </article>
                 </div>

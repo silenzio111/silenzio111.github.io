@@ -4,6 +4,25 @@
   
   
   <entry>
+    <title>jsscript</title>
+    <link href="/2024/09/17/jsscript/"/>
+    <url>/2024/09/17/jsscript/</url>
+    
+    <content type="html"><![CDATA[<html><head>  <title>Pyodide Example</title>  <!-- 引入 Pyodide 脚本 -->  <script src="https://cdn.jsdelivr.net/pyodide/v0.23.3/full/pyodide.js"></script></head><body>  <h1>Hello, Pyodide!</h1><p><button id="run_python">运行 Python</button></p>  <pre id="output"></pre>  <script>    async function loadPyodideAndRun() {      // 加载 Pyodide      let pyodide = await loadPyodide();      // Python 代码      let code = `      import math      def fuck(num):      return math.pi ** 100      fuck(num)      `;          // 执行 Python 代码      let result = await pyodide.runPythonAsync(code);          // 显示结果      document.getElementById('output').innerText = `Python 结果: ${result}`;    }        // 为按钮添加点击事件    document.getElementById('run_python').addEventListener('click', loadPyodideAndRun);  </script></body></html>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>code</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>2024cumcm</title>
     <link href="/2024/09/09/2024A/"/>
     <url>/2024/09/09/2024A/</url>
