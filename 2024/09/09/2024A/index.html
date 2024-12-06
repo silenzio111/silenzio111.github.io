@@ -18,14 +18,14 @@
   
     <meta name="description" content="初次尝试 今年参加数模国赛，选了A题，A题原题目是这样的：  “板凳龙”，又称“盘龙”，是浙闽地区的传统地方民俗文化活动。人们将少则几十条， 多则上百条的板凳首尾相连，形成蜿蜒曲折的板凳龙。盘龙时，龙头在前领头，龙身和龙尾 相随盘旋，整体呈圆盘状。一般来说，在舞龙队能够自如地盘入和盘出的前提下，盘龙所需 要的面积越小、行进速度越快，则观赏性越好。  题目是几何分析类型的题，对编程能力要求很高。为了">
 <meta property="og:type" content="article">
-<meta property="og:title" content="2024cumcm">
+<meta property="og:title" content="2024CumcmA题">
 <meta property="og:url" content="https://silenzio111.github.io/2024/09/09/2024A/">
 <meta property="og:site_name" content="Silenzio&#39;s Blog">
 <meta property="og:description" content="初次尝试 今年参加数模国赛，选了A题，A题原题目是这样的：  “板凳龙”，又称“盘龙”，是浙闽地区的传统地方民俗文化活动。人们将少则几十条， 多则上百条的板凳首尾相连，形成蜿蜒曲折的板凳龙。盘龙时，龙头在前领头，龙身和龙尾 相随盘旋，整体呈圆盘状。一般来说，在舞龙队能够自如地盘入和盘出的前提下，盘龙所需 要的面积越小、行进速度越快，则观赏性越好。  题目是几何分析类型的题，对编程能力要求很高。为了">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://silenzio111.github.io/2024/09/09/2024A/1.png">
 <meta property="article:published_time" content="2024-09-09T09:52:34.000Z">
-<meta property="article:modified_time" content="2024-09-09T11:20:16.841Z">
+<meta property="article:modified_time" content="2024-09-23T13:37:22.504Z">
 <meta property="article:author" content="silenzio">
 <meta property="article:tag" content="究竟有多少遗憾">
 <meta name="twitter:card" content="summary_large_image">
@@ -33,7 +33,7 @@
   
   
   
-  <title>2024cumcm - Silenzio&#39;s Blog</title>
+  <title>2024CumcmA题 - Silenzio&#39;s Blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -213,7 +213,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="2024cumcm"></span>
+            <span id="subtitle" data-typed-text="2024CumcmA题"></span>
           
         </div>
 
@@ -236,7 +236,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          889 字
+          1.1k 字
         
       </span>
     
@@ -247,7 +247,7 @@
         
         
         
-          8 分钟
+          10 分钟
         
       </span>
     
@@ -297,12 +297,12 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">2024cumcm</h1>
+            <h1 id="seo-header">2024CumcmA题</h1>
             
               <p id="updated-time" class="note note-info" style="display: none">
                 
                   
-                    本文最后更新于 2024-09-09T19:20:16+08:00
+                    本文最后更新于 2024-09-23T21:37:22+08:00
                   
                   
 
@@ -330,12 +330,15 @@
 <p>当然，由于本题的节点比较少，位置的模拟是正确的，问题出在速度的模拟上，求解速度的部分代码：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">get_speed</span>(<span class="hljs-params">t0,time</span>):<br>    <span class="hljs-string">&#x27;&#x27;&#x27;</span><br><span class="hljs-string">    输入初始角度和运动时间time</span><br><span class="hljs-string">    确定时间微元dt为1e-7</span><br><span class="hljs-string">    &#x27;&#x27;&#x27;</span><br>    dt = <span class="hljs-number">1e-7</span><br>    current_arc = time*<span class="hljs-number">200</span> <span class="hljs-comment">#当前头部的弧长</span><br>    updated_arc = (time+dt)*<span class="hljs-number">200</span> <span class="hljs-comment">#dt时间内头部加上走过的弧长</span><br>    <br>    <span class="hljs-keyword">return</span> ...<br></code></pre></td></tr></table></figure>
 <p>当角度步长比较大时，空间的网格就会比较粗糙。这里就产生了一个反常的现象，用于模拟速度的<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>δ</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">\delta t</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal" style="margin-right:0.03785em;">δ</span><span class="mord mathnormal">t</span></span></span></span>并不是越小越好，当</p>
-<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>s</mi><mo>=</mo><mi>v</mi><mi>δ</mi></mrow><annotation encoding="application/x-tex">s = v\delta 
-</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">s</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="mord mathnormal" style="margin-right:0.03785em;">δ</span></span></span></span></span></p>
+<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>s</mi><mo>=</mo><mi>v</mi><mi>δ</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">s = v\delta t
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">s</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="mord mathnormal" style="margin-right:0.03785em;">δ</span><span class="mord mathnormal">t</span></span></span></span></span></p>
 <p>即微小位移小于空间网格时，所得到的速度就会有较大的偏差。</p>
 <h2 id="参赛体验">参赛体验</h2>
 <p>还有很多的遗憾暂且不表。但这次比赛的体验还是不错的，没有过分熬夜，讨论的氛围良好，总体的完成度还不错。</p>
+<p>这道题给我最大的感受是，用的数学知识并不多，往往只需要初高中水平的数学就能够完成模型的搭建。这道题对编程能力的要求比数学高多了，建议将全国大学生数学建模竞赛改成全国大学生编程技能竞赛（误）。</p>
 <p>想起高中时总在考完试才知道自己的错漏，当找到了这微小的误差，窗玻璃上溅满了夏末的雨滴。</p>
+<h2 id="9-23">9.23</h2>
+<p>刷到一篇关于四川数模阅卷的回答，如果前三问答案都正确，评阅人会认为模型是正确的，有可能被推送至答辩。可惜这个错误使得整篇论文中凡是有关于速度计算的部分都是错的，在前三问中，几乎每一小问都要求计算速度，这就导致阅卷人认为我们的模型有误。至此，国奖是泡汤了。不得不说，一次参赛，是否受益终生不好说，一次教训够我记一阵子了。</p>
 
                 
               </div>
@@ -360,7 +363,7 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>2024cumcm</div>
+      <div>2024CumcmA题</div>
       <div>https://silenzio111.github.io/2024/09/09/2024A/</div>
     </div>
     <div class="license-meta">
@@ -404,6 +407,12 @@
                 <div class="post-prevnext my-3">
                   <article class="post-prev col-6">
                     
+                    
+                      <a href="../../../../2024/12/06/EverywhereWeGo/" title="EverywhereWeGo">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">EverywhereWeGo</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
                     
                   </article>
                   <article class="post-next col-6">

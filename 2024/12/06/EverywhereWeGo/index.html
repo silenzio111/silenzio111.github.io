@@ -16,25 +16,22 @@
   <meta name="author" content="silenzio">
   <meta name="keywords" content="">
   
-    <meta name="description" content="解决一个小问题">
+    <meta name="description" content="...">
 <meta property="og:type" content="article">
-<meta property="og:title" content="优雅地选取jupyter内核">
-<meta property="og:url" content="https://silenzio111.github.io/2024/09/03/kernelchoice/">
+<meta property="og:title" content="EverywhereWeGo">
+<meta property="og:url" content="https://silenzio111.github.io/2024/12/06/EverywhereWeGo/">
 <meta property="og:site_name" content="Silenzio&#39;s Blog">
-<meta property="og:description" content="解决一个小问题">
+<meta property="og:description" content="...">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://silenzio111.github.io/2024/09/03/kernelchoice/1.png">
-<meta property="og:image" content="https://silenzio111.github.io/2024/09/03/kernelchoice/2.png">
-<meta property="article:published_time" content="2024-09-03T05:06:04.000Z">
-<meta property="article:modified_time" content="2024-09-09T11:12:35.530Z">
+<meta property="article:published_time" content="2024-12-06T07:40:55.000Z">
+<meta property="article:modified_time" content="2024-12-06T09:01:39.752Z">
 <meta property="article:author" content="silenzio">
-<meta property="article:tag" content="tools">
+<meta property="article:tag" content="life_record">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://silenzio111.github.io/2024/09/03/kernelchoice/1.png">
   
   
   
-  <title>优雅地选取jupyter内核 - Silenzio&#39;s Blog</title>
+  <title>EverywhereWeGo - Silenzio&#39;s Blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -214,7 +211,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="优雅地选取jupyter内核"></span>
+            <span id="subtitle" data-typed-text="EverywhereWeGo"></span>
           
         </div>
 
@@ -225,8 +222,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2024-09-03 13:06" pubdate>
-          2024年9月3日 下午
+        <time datetime="2024-12-06 15:40" pubdate>
+          2024年12月6日 下午
         </time>
       </span>
     
@@ -237,7 +234,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          237 字
+          1k 字
         
       </span>
     
@@ -248,7 +245,7 @@
         
         
         
-          2 分钟
+          9 分钟
         
       </span>
     
@@ -298,12 +295,12 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">优雅地选取jupyter内核</h1>
+            <h1 id="seo-header">EverywhereWeGo</h1>
             
               <p id="updated-time" class="note note-info" style="display: none">
                 
                   
-                    本文最后更新于 2024-09-09T19:12:35+08:00
+                    本文最后更新于 2024-12-06T17:01:39+08:00
                   
                   
 
@@ -313,35 +310,12 @@
             
               <div class="markdown-body">
                 
-                <p>vscode里的jupyter notebook我用着很满意，但是有一个小问题。</p>
-<p>我安装了多个python环境还有一个julia的解释器，每次打开一个笔记本文件，总是会让我指定一个内核运行：</p>
-<p><img src="1.png" srcset="/img/loading.gif" lazyload></p>
-这种情况当然敲一个键就完事了，但是次数多了难免会让人厌倦。于是我在网上找了一圈，找到了官方给出的[解决方案](https://github.com/microsoft/vscode/issues/130946#issuecomment-1899389049)
-<blockquote>
-<h1>Solutions</h1>
-<h1>1. Hide all of the Python environments except the one you need</h1>
-<ul>
-<li>If you have n python environments and you only use one, then hide all of the others.</li>
-<li>If you have just Jupyter and Python extension, then the remaining Python env will be automatically selected (however if you have other remote jupyter kernels, or other extensions that contribute kernels, then this will not get selected automatically). Please see solution 2.</li>
-<li>Open a Jupyter ntoebook (to ensure the Jupyter extension gets activated)</li>
-<li>Open your settings.json file</li>
-<li>Add the setting <code>&quot;jupyter.kernels.excludePythonEnvironments&quot;: [...]</code> and add the environments you wish to hide.</li>
-</ul>
-<p>See here <a href="https://github.com/microsoft/vscode-jupyter/discussions/13032#discussioncomment-8049433">microsoft/vscode-jupyter#13032 (comment)</a></p>
-<h1>2. Install the extension <code>Default Python Kernels for Jupyter Notebooks</code></h1>
-<ul>
-<li>Currently this only works in the latest Insiders Version of VS Code (will be supported in the next release of VS Code and Jupyter extension)</li>
-<li><a href="https://code.visualstudio.com/insiders/">Install VS Code insiders</a></li>
-<li>Install latest pre-release version of Jupyter Extension (a change in Jupyter extension is required to make this possible)</li>
-<li>Install the above extension <a href="https://marketplace.visualstudio.com/items?itemName=donjayamanne.vscode-default-python-kernel">https://marketplace.visualstudio.com/items?itemName=donjayamanne.vscode-default-python-kernel</a></li>
-</ul>
-<p>From here on, all notebooks opened will have the <code>active Python environment</code> selected as the kernel.<br>
-You can change the <code>Active Python Environment</code> for your workspace/globally using the command <code>Python: Select Interpreter</code></p>
-<p>You can find more information on the read me of the above extension.</p>
-</blockquote>
-<p>第一种方案是排除其他的内核选择，但是其他的内核还要用，这种方案就不能用，第二种是安装一个插件就好了。</p>
-<p><img src="2.png" srcset="/img/loading.gif" lazyload></p>
-<p>插件会自动选择当前活跃的内核，避免了多次选取的麻烦，问题圆满解决。</p>
+                <p>冒个泡</p>
+<p>学期开始的时候打算跟着CS61B好好过一下数据结构与算法，顺便熟悉一下Java，但是在目前看来，学习Java对目前的学习与比赛没有直接的作用，倒是数据结构的部分让我受益匪浅。</p>
+<p>以前一直喜欢琢磨一些算法的实现，没有尝试过开发一些应用，经常看着项目的文档就睡着了，后来了解到Cursor的威力，慢慢感觉，工程能力可以让AI代替，作为人类，只需要指挥AI实现心中的构想就可以了。这样的情况下，确保逻辑清楚就能写出很好的App了。记得才开始学习编程的时候，我倒是非常羡慕那些能够写出炫酷界面的人，后来才发现，要这样的话，可以直接学习JavaScript➕网页开发，这样快速入门，会收到足够的正向反馈。这也是为什国外往往推荐JavaScript作为入门的原因。</p>
+<p>在寒冷的冬日，能有空闲的时间，听着音乐读一点书是一种难得的幸福。这学期是越来越忙了，人菜瘾大选了门难度很大的优化理论，选的时候以为是线性规划和运筹学这些比较简单的内容，不成想是类似于泛函分析的凸分析，虽然多了一点几何上的直观，但是对我来说难度依旧很大，不过上着课确实感觉大脑充实不少，或许有点用呢。如果时间足够充裕，会写一点这方面的内容。</p>
+<p>不过作为一个经济学专业的学生，天天搞着coding难免有些不务正业。迷茫的时候，好奇金融市场到底是怎么一回事，于是有空去听了一个08级金融专业的学姐的讲座，不得不说在金融业工作的人的表达能力，清晰流畅，比那在学院教着课的老教授强不少。听着学姐的分享，让我感慨最深的还是足够清晰明确的路线，从西财毕业，再到LSE读硕士，最后在美国巴鲁克商学院读MBA，赶上了金融市场繁荣的大好时机。不过演讲虽然精彩，但是对现在的意义不大。当时在现场有一位即将毕业的硕士同学提问，他们班60多人，只有十多个人找到了去处，剩下的全部处于待业状态。我觉得那位学姐无法对这个问题给出满意的答案，如果硕士的就业都那么艰难，那么为了就业而选择继续读书的意义是什么？不过有几句话我觉得很有道理，用真诚和努力对待世界，世界也会用相同的方式对待你。毕竟在世界上还是好的人占大多数，大部分人还是愿意提供帮助的。让我印象最深的是她写下的这句话&quot;You have all you need to lead a wildly successful and meaningful life.&quot;</p>
+<p>在学校的社团参加的也不多，大一的时候参加了一个羽毛球社团，想着免费的场地和球。后来逐渐变懒，球也不打了，但是代码会写一点，就加了一个数据科学社团，可惜这个社团是百废待兴，成员都寥寥无几，于是一进去就是部长了。想着以前学编程的经历，或许可以能给社团成员给出一点学习编程路上的指导。本人打算就用Kaggle上的入门系列的Jupyter笔记本，适当翻译一下，就是非常好的教材了，至少比学校的教程强。接下来会写一点教学方面的内容，感觉很有意思。不过感觉学校的课程都没几个听，我准备的课也不会有几个人来，不过希望还是来的人多一点吧。</p>
 
                 
               </div>
@@ -354,7 +328,7 @@ You can change the <code>Active Python Environment</code> for your workspace/glo
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="../../../../tags/tools/" class="print-no-link">#tools</a>
+        <a href="../../../../tags/life-record/" class="print-no-link">#life_record</a>
       
     </div>
   
@@ -366,8 +340,8 @@ You can change the <code>Active Python Environment</code> for your workspace/glo
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>优雅地选取jupyter内核</div>
-      <div>https://silenzio111.github.io/2024/09/03/kernelchoice/</div>
+      <div>EverywhereWeGo</div>
+      <div>https://silenzio111.github.io/2024/12/06/EverywhereWeGo/</div>
     </div>
     <div class="license-meta">
       
@@ -379,7 +353,7 @@ You can change the <code>Active Python Environment</code> for your workspace/glo
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2024年9月3日</div>
+          <div>2024年12月6日</div>
         </div>
       
       
@@ -411,18 +385,12 @@ You can change the <code>Active Python Environment</code> for your workspace/glo
                   <article class="post-prev col-6">
                     
                     
-                      <a href="../../../../2024/09/09/2024A/" title="2024CumcmA题">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">2024CumcmA题</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="../../../../2024/08/31/opttsp/" title="TSP问题的优化求解">
-                        <span class="hidden-mobile">TSP问题的优化求解</span>
+                      <a href="../../../../2024/09/09/2024A/" title="2024CumcmA题">
+                        <span class="hidden-mobile">2024CumcmA题</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
