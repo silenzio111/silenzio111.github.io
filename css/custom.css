@@ -105,3 +105,8 @@
     U+FEFF,
     U+FFFD;
 }
+
+body,
+.markdown-body {
+  font-weight: 450;
+}
