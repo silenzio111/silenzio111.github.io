@@ -4,6 +4,51 @@
   
   
   <entry>
+    <title>轨迹分类</title>
+    <link href="/2025/09/21/%E8%BD%A8%E8%BF%B9%E5%88%86%E7%B1%BB/"/>
+    <url>/2025/09/21/%E8%BD%A8%E8%BF%B9%E5%88%86%E7%B1%BB/</url>
+    
+    <content type="html"><![CDATA[]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>Claude Code</title>
+    <link href="/2025/09/21/Claude_Code/"/>
+    <url>/2025/09/21/Claude_Code/</url>
+    
+    <content type="html"><![CDATA[<p>随着推理模型的一步步发展，现在的写代码似乎越来越轻松了。</p><p>可能是我不怎么需要写专业代码的原因，但是总觉得现在的大模型已经越来越逼近顶尖人类的能力。从前我觉得 AI 再厉害也得由人类将代码执行。</p><p>以前看到别人用 AI 写代码就是 copy &amp; paste，然后再把报错的信息扔回 AI 对话框里让它继续改进代码。但是现在的 agent 模型已经可以做到自动执行代码并阅读程序的输出了。</p><p>我之前尝试了 Google 的 Gemini CLI，但是感觉差点意思，首先是要想在终端使用，还得先打开梯子的 TUN 模式，或者是复制终端代理命令，才能登录进行。</p><p>并且 Google 号称的额度很大，实际上用起来，在上下文窗口很大的时候，使用的模型换被偷偷换到 Flash模型，降智比较严重。</p><p>但是尝试了 Claude Code , 体验很是很不错的。除了有些贵之外，基本上可以满足日常的代码编写要求。在高难度的编程任务上，Claude Code 基本上也能够完成。</p><p>下面是安装与使用：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash"><br>npm install -g @anthropic-ai/claude-code<br><br>claude --version<br><br></code></pre></td></tr></table></figure><p>设置环境：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs bash"><br><span class="hljs-built_in">cd</span> your-project-folder<br><br><span class="hljs-built_in">export</span> ANTHROPIC_AUTH_TOKEN=sk-... <br><br><span class="hljs-built_in">export</span> ANTHROPIC_BASE_URL= <span class="hljs-string">&#x27;任意代理地址&#x27;</span><br><br></code></pre></td></tr></table></figure><p>最后启动 Claude：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash"><br>claude  <br><br></code></pre></td></tr></table></figure>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>tools</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>如何改造一篇硕士论文</title>
+    <link href="/2025/09/21/%E5%A6%82%E4%BD%95%E6%94%B9%E9%80%A0%E4%B8%80%E7%AF%87%E7%A1%95%E5%A3%AB%E8%AE%BA%E6%96%87/"/>
+    <url>/2025/09/21/%E5%A6%82%E4%BD%95%E6%94%B9%E9%80%A0%E4%B8%80%E7%AF%87%E7%A1%95%E5%A3%AB%E8%AE%BA%E6%96%87/</url>
+    
+    <content type="html"><![CDATA[]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>拔苗助长的科研训练</title>
     <link href="/2025/07/06/life-story/"/>
     <url>/2025/07/06/life-story/</url>
