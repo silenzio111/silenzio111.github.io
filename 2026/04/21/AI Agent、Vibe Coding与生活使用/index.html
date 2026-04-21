@@ -7,8 +7,11 @@
 
 <head>
   <meta charset="UTF-8">
+
   <link rel="apple-touch-icon" sizes="76x76" href="../../../../img/fluid.png">
   <link rel="icon" href="../../../../img/fluid.png">
+  
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
@@ -16,22 +19,22 @@
   <meta name="author" content="silenzio">
   <meta name="keywords" content="">
   
-    <meta name="description" content="Claude Code初体验">
+    <meta name="description" content="Claude Code初体验和各种 agent 的体验和使用历程">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Claude Code">
-<meta property="og:url" content="https://silenzio111.github.io/2025/09/21/Claude_Code/">
+<meta property="og:title" content="AI Agent、Vibe Coding与生活使用">
+<meta property="og:url" content="https://silenzio111.github.io/2026/04/21/AI%20Agent%E3%80%81Vibe%20Coding%E4%B8%8E%E7%94%9F%E6%B4%BB%E4%BD%BF%E7%94%A8/">
 <meta property="og:site_name" content="Silenzio&#39;s Blog">
-<meta property="og:description" content="Claude Code初体验">
+<meta property="og:description" content="Claude Code初体验和各种 agent 的体验和使用历程">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2025-09-21T11:45:36.000Z">
-<meta property="article:modified_time" content="2025-09-21T12:32:39.009Z">
+<meta property="article:published_time" content="2026-04-21T11:45:36.000Z">
+<meta property="article:modified_time" content="2026-04-21T12:11:14.262Z">
 <meta property="article:author" content="silenzio">
 <meta property="article:tag" content="tools">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>Claude Code - Silenzio&#39;s Blog</title>
+  <title>AI Agent、Vibe Coding与生活使用 - Silenzio&#39;s Blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -50,7 +53,7 @@
 <!-- 主题依赖的图标库，不要自行修改 -->
 <!-- Do not modify the link that theme dependent icons -->
 
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
 
 
 
@@ -71,7 +74,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"silenzio111.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":10,"cursorChar":"⚝➕","loop":false,"scope":["post","page"]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":true,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+    var CONFIG = {"hostname":"silenzio111.github.io","root":"/","version":"1.9.9","typing":{"enable":true,"typeSpeed":10,"cursorChar":"⚝➕","loop":false,"scope":["post","page"]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":true,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"expand_all":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"openkounter":{"server_url":"https://open-kounter.mintimate.cn","path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null},"woyaola":null,"cnzz":null},"search_path":"/local-search.xml","include_content_in_search":true};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -84,7 +87,7 @@
 
 
   
-<meta name="generator" content="Hexo 6.3.0"></head>
+<meta name="generator" content="Hexo 8.1.1"></head>
 
 
 <body>
@@ -106,7 +109,7 @@
       <div class="animated-icon"><span></span><span></span><span></span></div>
     </button>
 
-    <!-- Collapsible content -->
+    <!-- Collapsible content (desktop) -->
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav ml-auto text-center">
         
@@ -202,16 +205,133 @@
   </div>
 </nav>
 
+<!-- Mobile grid menu overlay -->
+<div id="mobile-grid-menu" class="d-lg-none">
+  <div class="mobile-grid-menu-inner">
+    <div class="container">
+      <div class="row">
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="../../../../index.html" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-home-fill"></i>
+                  <span>首页</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="../../../../archives/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-archive-fill"></i>
+                  <span>归档</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="../../../../tags/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-tags-fill"></i>
+                  <span>标签</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="../../../../about/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-user-fill"></i>
+                  <span>关于</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="../../../../links/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-link-fill"></i>
+                  <span>友链</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="../../../../A-Vitepress-Site/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-link-fill"></i>
+                  <span>another_site</span>
+                </div>
+              </a>
+            </div>
+          
+        
+        
+          <div class="col-4 mobile-grid-cell" id="mobile-search-btn">
+            <a href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <div class="mobile-grid-item">
+                <i class="iconfont icon-search"></i>
+                <span>搜索</span>
+              </div>
+            </a>
+          </div>
+        
+        
+          <div class="col-4 mobile-grid-cell" id="mobile-color-toggle-btn"
+               data-label-light="开灯"
+               data-label-dark="关灯">
+            <a href="javascript:;" aria-label="Color Toggle">
+              <div class="mobile-grid-item">
+                <i class="iconfont icon-dark" id="mobile-color-toggle-icon"></i>
+                <span id="mobile-color-toggle-label">关灯</span>
+              </div>
+            </a>
+          </div>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
   
 
 <div id="banner" class="banner" parallax=true
-     style="background: url('../../../../img/default.png') no-repeat center center; background-size: cover;">
+     style="background: url('../../../../img/banner.jpg') no-repeat center center; background-size: cover;">
   <div class="full-bg-img">
     <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="Claude Code"></span>
+            <span id="subtitle" data-typed-text="AI Agent、Vibe Coding与生活使用"></span>
           
         </div>
 
@@ -222,8 +342,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2025-09-21 19:45" pubdate>
-          2025年9月21日 晚上
+        <time datetime="2026-04-21 19:45" pubdate>
+          2026年4月21日 晚上
         </time>
       </span>
     
@@ -234,7 +354,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          350 字
+          980 字
         
       </span>
     
@@ -245,7 +365,7 @@
         
         
         
-          3 分钟
+          9 分钟
         
       </span>
     
@@ -262,6 +382,8 @@
     </div>
   </div>
 </div>
+
+
 
 </div>
 
@@ -295,12 +417,12 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">Claude Code</h1>
+            <h1 id="seo-header">AI Agent、Vibe Coding与生活使用</h1>
             
               <p id="updated-time" class="note note-info" style="display: none">
                 
                   
-                    本文最后更新于 2025-09-21T20:32:39+08:00
+                    本文最后更新于 2026-04-21T20:11:14+08:00
                   
                   
 
@@ -310,18 +432,21 @@
             
               <div class="markdown-body">
                 
-                <p>随着推理模型的一步步发展，现在的写代码似乎越来越轻松了。</p>
-<p>可能是我不怎么需要写专业代码的原因，但是总觉得现在的大模型已经越来越逼近顶尖人类的能力。从前我觉得 AI 再厉害也得由人类将代码执行。</p>
-<p>以前看到别人用 AI 写代码就是 copy &amp; paste，然后再把报错的信息扔回 AI 对话框里让它继续改进代码。但是现在的 agent 模型已经可以做到自动执行代码并阅读程序的输出了。</p>
-<p>我之前尝试了 Google 的 Gemini CLI，但是感觉差点意思，首先是要想在终端使用，还得先打开梯子的 TUN 模式，或者是复制终端代理命令，才能登录进行。</p>
-<p>并且 Google 号称的额度很大，实际上用起来，在上下文窗口很大的时候，使用的模型换被偷偷换到 Flash模型，降智比较严重。</p>
-<p>但是尝试了 Claude Code , 体验很是很不错的。除了有些贵之外，基本上可以满足日常的代码编写要求。在高难度的编程任务上，Claude Code 基本上也能够完成。</p>
-<p>下面是安装与使用：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash"><br>npm install -g @anthropic-ai/claude-code<br><br>claude --version<br><br></code></pre></td></tr></table></figure>
-<p>设置环境：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs bash"><br><span class="hljs-built_in">cd</span> your-project-folder<br><br><span class="hljs-built_in">export</span> ANTHROPIC_AUTH_TOKEN=sk-... <br><br><span class="hljs-built_in">export</span> ANTHROPIC_BASE_URL= <span class="hljs-string">&#x27;任意代理地址&#x27;</span><br><br></code></pre></td></tr></table></figure>
-<p>最后启动 Claude：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash"><br>claude  <br><br></code></pre></td></tr></table></figure>
+                <p>在 2026 年，<br>
+随着推理模型的一步步发展，现在的写代码似乎越来越轻松了。</p>
+<p>我日常不需要怎么写代码，总觉得现在的大模型已经越来越逼近顶尖人类的能力。现在 agent 框架已经可以完整实现写代码，获取代码执行结果的反馈，不断修正，最后逼近使用者的目标的效果。</p>
+<p>在 2025 年 7 月，我第一次使用了这样的工具。我尝试的不是现在（2026 年 4 月）非常流行的 claude code 等工具，当时我使用的是 Google 的 Gemini CLI，因为，当时铺天盖地的新闻就是，gemini cli 免费了。当时恰巧我白嫖了 gemini 的一个 pro 账号，于是就下载下来使用。但是当时不是很顺利，gemini cli 对网络的要求特别严格，得开启魔法上网的隧道模式才行(TUN)。即便搞定了网络问题，但是此时的模型的智力还是 gemini 2.5 pro 的时代，我用之前的一个比赛的赛题进行测试，它没有做对其中任何一道题。查找一番原因，由于当时的使用人数太多，Google 偷偷替换了模型，将 pro 模型换成了 flash 模型</p>
+<p>![[Pasted image 20260421195119.png]]</p>
+<blockquote>
+<p>当然，现在的 gemini 也是很难登录上去（2026.4）</p>
+</blockquote>
+<p>![[Pasted image 20260421195736.png]]</p>
+<blockquote>
+<p>更新了之后，变得好看多了，但是我的 pro 资格已经消失不见</p>
+</blockquote>
+<p>直到 2025 年 11 月，我才开始使用 claude code。此时，我面临繁重的学业任务。一周的课程数量巨大，非常不幸的是，几乎每堂课都要进行课堂展示，需要制作大量的 ppt，还要写大量的数据清洗和回归代码。（有些课堂需要用数据进行实证分析，就是跑回归分析）如果只靠传统的手写代码或者是使用网页版的 ai 问答，这样的学业任务肯定是完不成的。于是我开始使用了 claude code。</p>
+<p>我一开始对他是不报什么期待的，我甚至以为他能帮我生成演讲的 latex beamer 的 tex 源码我自己修改就行了。但是事实上 claude sonnet 4.5 的智力程度超乎了我的想象，在处理这些简单任务上，它几乎是一次搞定，不需要人来干预。</p>
+<p>后来就是 openclaw爆火的事件了。但是我不认为 openclaw 有任何优于 claude or codex 的地方，与之相反，它的 token 使用效率极低，如果 openclaw 能完成的事，codex 和 claude 能比它完成得更好，且花费更少的 token。</p>
 
                 
               </div>
@@ -346,8 +471,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>Claude Code</div>
-      <div>https://silenzio111.github.io/2025/09/21/Claude_Code/</div>
+      <div>AI Agent、Vibe Coding与生活使用</div>
+      <div>https://silenzio111.github.io/2026/04/21/AI Agent、Vibe Coding与生活使用/</div>
     </div>
     <div class="license-meta">
       
@@ -359,7 +484,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2025年9月21日</div>
+          <div>2026年4月21日</div>
         </div>
       
       
@@ -372,7 +497,7 @@
               
                 <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
                   <span class="hint--top hint--rounded" aria-label="BY - 署名">
-                    <i class="iconfont icon-by"></i>
+                    <i class="iconfont icon-cc-by"></i>
                   </span>
                 </a>
               
@@ -391,18 +516,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="../../../../2025/09/21/%E8%BD%A8%E8%BF%B9%E5%88%86%E7%B1%BB/" title="轨迹分类">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">轨迹分类</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="../../../../2025/07/06/life-story/" title="拔苗助长的科研训练">
-                        <span class="hidden-mobile">拔苗助长的科研训练</span>
+                      <a href="../../../../2026/04/21/%E5%AE%9E%E5%88%86%E6%9E%90%E5%AD%A6%E4%B9%A0/" title="实分析学习笔记——简单清晰的方式">
+                        <span class="hidden-mobile">实分析学习笔记——简单清晰的方式</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -502,7 +621,6 @@
   
   
   
-  
 </div>
 
   </footer>
@@ -560,7 +678,63 @@
     var boardCtn = jQuery('#board-ctn');
     var boardTop = boardCtn.offset().top;
 
-    window.tocbot.init(Object.assign({
+    function isExpandAllEnabled() {
+      return CONFIG.toc && CONFIG.toc.expand_all === true;
+    }
+    function expandAllToc() {
+      if (!isExpandAllEnabled()) { return; }
+      jQuery('#toc-body .tocbot-is-collapsed').removeClass('tocbot-is-collapsed');
+    }
+    function updateTocToggle($li, $childList) {
+      var $toggle = $li.children('.toc-toggle');
+      if ($toggle.length === 0) { return; }
+      var collapsed = $childList.hasClass('tocbot-is-collapsed');
+      $toggle
+        .toggleClass('toc-toggle-collapsed', collapsed)
+        .toggleClass('toc-toggle-expanded', !collapsed);
+    }
+    function bindTocToggle() {
+      if (!isExpandAllEnabled()) { return; }
+      jQuery('#toc-body .toc-list-item').each(function() {
+        var $li = jQuery(this);
+        var $childList = $li.children('ol');
+        if ($childList.length === 0) {
+          if ($li.children('.toc-toggle').length === 0) {
+            $li.prepend('<span class="toc-toggle toc-toggle-placeholder" aria-hidden="true">›</span>');
+          }
+          return;
+        }
+
+        if ($li.children('.toc-toggle').length === 0) {
+          $li.prepend('<span class="toc-toggle toc-toggle-expanded" aria-hidden="true">›</span>');
+        }
+        updateTocToggle($li, $childList);
+      });
+      jQuery('#toc-body').off('click.tocToggle').on('click.tocToggle', '.toc-toggle', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var $li = jQuery(this).parent('.toc-list-item');
+        var $childList = $li.children('ol');
+        if ($childList.length === 0) { return; }
+        $childList.toggleClass('tocbot-is-collapsed');
+        updateTocToggle($li, $childList);
+      });
+      if (!window.__tocToggleObserver) {
+        window.__tocToggleObserver = new MutationObserver(function(mutations) {
+          mutations.forEach(function(mutation) {
+            if (mutation.type !== 'attributes' || mutation.attributeName !== 'class') { return; }
+            var $list = jQuery(mutation.target);
+            var $li = $list.parent('.toc-list-item');
+            if ($li.length === 0) { return; }
+            updateTocToggle($li, $list);
+          });
+        });
+        jQuery('#toc-body ol').each(function() {
+          window.__tocToggleObserver.observe(this, { attributes: true });
+        });
+      }
+    }
+    var tocConfig = Object.assign({
       tocSelector     : '#toc-body',
       contentSelector : '.markdown-body',
       linkClass       : 'tocbot-link',
@@ -571,10 +745,16 @@
       scrollSmooth    : true,
       includeTitleTags: true,
       headingsOffset  : -boardTop,
-    }, CONFIG.toc));
+    }, CONFIG.toc);
+    if (isExpandAllEnabled()) {
+      tocConfig.collapseDepth = 6;
+    }
+    window.tocbot.init(tocConfig);
     if (toc.find('.toc-list-item').length > 0) {
       toc.css('visibility', 'visible');
     }
+    expandAllToc();
+    bindTocToggle();
 
     Fluid.events.registerRefreshCallback(function() {
       if ('tocbot' in window) {
@@ -586,6 +766,8 @@
         if (toc.find('.toc-list-item').length > 0) {
           toc.css('visibility', 'visible');
         }
+        expandAllToc();
+        bindTocToggle();
       }
     });
   });
