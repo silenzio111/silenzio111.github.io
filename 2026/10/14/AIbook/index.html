@@ -28,7 +28,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://silenzio111.github.io/2026/10/14/AIbook/img_20261016_000407_1.png">
 <meta property="article:published_time" content="2026-10-14T09:18:21.000Z">
-<meta property="article:modified_time" content="2026-10-15T16:20:27.454Z">
+<meta property="article:modified_time" content="2026-10-16T09:26:53.714Z">
 <meta property="article:author" content="silenzio">
 <meta property="article:tag" content="ai">
 <meta property="article:tag" content="tools">
@@ -361,7 +361,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          699 字
+          970 字
         
       </span>
     
@@ -372,7 +372,7 @@
         
         
         
-          6 分钟
+          9 分钟
         
       </span>
     
@@ -429,7 +429,7 @@
               <p id="updated-time" class="note note-info" style="display: none">
                 
                   
-                    本文最后更新于 2026-10-16T00:20:27+08:00
+                    本文最后更新于 2026-10-16T17:26:53+08:00
                   
                   
 
@@ -445,6 +445,8 @@
 <p>这个项目以前超级火，因为它保留了原本数学公式的排版格式。最重要的是它保留了排版位置，可以非常方便地实现中英文对照着看，下面的图是翻译成品的一个例子：</p>
 <p><img src="img_20261016_000407_1.png" srcset="/img/loading.gif" lazyload alt="img_20261016_000407_1.png"></p>
 <p>可以看到，翻译出来的成品的排版基本遵从了原书籍（这本书是MIT的计算生物学的教材，搜其中的书名就可以很方便地找到）的排版的格式。这样显得非常清晰易读（这里有一个改进的空间，可以很清楚地看到，排版出来的中文段落之间的间隙比较大，部分是由于中文的信息密度比英文高造成的那么如果把字体放大一点，通过全局的间隙算一个最优的字体放大的幅度，可以使中文的页看起来排版更优雅一些）。</p>
+<p>这个项目提供了google和bing的翻译服务，但是批量调用我这里的ip被限制掉，不是特别方便，此外其速度也比较慢。那用llm来翻译如何呢，那当然是很不错的了，翻译质量一般情况下是比谷歌翻译强一点点的。当然我现在不知道谷歌的翻译服务现在是否是走大模型提供的。</p>
+<p>首先openrouter有很多免费的模型提供服务，但是这些模型有些声明只能通过agent去调用他们，为了能够薅到这些模型，势必要写一个转换的网关，把请求包装成agent的样式。这个网关也带来了另外一个好处，可以保证翻译软件里所填的地址不用频繁变动。openrouter请求的格式如下：</p>
 
                 
               </div>
